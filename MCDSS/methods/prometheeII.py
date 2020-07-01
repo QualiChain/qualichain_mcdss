@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 import math
 import sys
-import json
 from read_csv import read_criteria_details, read_decision_matrix
 from helpers import normalize_weights, sort_alternatives, result_in_json, negate_columns
 

@@ -27,7 +27,6 @@ def main(decision_matrix_file_path, criteria_specification_file_path):
     result.append({"Dominance Table": dominance_matrix.tolist(), "Alternatives": alternatives})
     return jsonify(result)
 
-    return result
 
 def calculate_agreement_matrix(decision_matrix, weights):
     """ calculaties the agreement matrix for electre """
