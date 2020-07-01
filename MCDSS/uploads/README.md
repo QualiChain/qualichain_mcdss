@@ -1,1 +1,1 @@
-# Uploaded files will be stored here.
+Uploaded files will be stored here.

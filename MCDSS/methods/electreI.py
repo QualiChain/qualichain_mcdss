@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import math
 import sys
-import json
+from flask import Flask, jsonify
 from read_csv import read_criteria_details, read_decision_matrix
 from helpers import normalize_weights, sort_alternatives, result_in_json, negate_columns
 
@@ -23,8 +23,10 @@ def main(decision_matrix_file_path, criteria_specification_file_path):
     # create Dominance Table
     dominance_matrix = calculate_dominance_table(agreement_matrix, disagreement_matrix, agreement_threshold)
     # create result as json object, result consists of the dominance table and the alternatives
-    result = json.dumps({"Dominance Table": dominance_matrix.tolist(), "Alternatives": alternatives})
-    #return dominance_matrix, alternatives
+    result = []
+    result.append({"Dominance Table": dominance_matrix.tolist(), "Alternatives": alternatives})
+    return jsonify(result)
+
     return result
 
 def calculate_agreement_matrix(decision_matrix, weights):
