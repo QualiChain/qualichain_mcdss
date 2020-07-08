@@ -30,18 +30,18 @@ def calculate_preference_matrix(decision_matrix, criteria_types, preference_thre
     preference_matrix = np.zeros((len(decision_matrix), len(decision_matrix)), float)
     for i in range(len(decision_matrix)):
         for j in range(len(decision_matrix)):
-            if (i != j):
+            if i != j:
                 for k in range(len(decision_matrix[0])):
                     preference = 0
-                    if (criteria_types[k] == "usual"):
+                    if criteria_types[k] == "usual":
                         preference = usual_criterion(decision_matrix[i][k] - decision_matrix[j][k])
-                    elif (criteria_types[k] == "quasi"):
+                    elif criteria_types[k] == "quasi":
                         preference = quasi_criterion(indifference_thresholds[k], decision_matrix[i][k] - decision_matrix[j][k])
-                    elif (criteria_types[k] == "linear"):
+                    elif criteria_types[k] == "linear":
                         preference = linear_criterion(preference_thresholds[k], decision_matrix[i][k] - decision_matrix[j][k])
-                    elif (criteria_types[k] == "linear with indifference threshold"):
+                    elif criteria_types[k] == "linear with indifference threshold":
                         preference = linear_indifference__criterion(indifference_thresholds[k], preference_thresholds[k], decision_matrix[i][k] - decision_matrix[j][k])
-                    elif (criteria_types[k] == "level"):
+                    elif criteria_types[k] == "level":
                         preference = level_criterion(indifference_thresholds[k], preference_thresholds[k], decision_matrix[i][k] - decision_matrix[j][k])
                     preference_matrix[i][j] += preference * normalized_weights[k]
     return preference_matrix
@@ -64,41 +64,41 @@ def calculate_flows(preference_matrix):
 
 def usual_criterion(distance):
     """ implements usual criterion """
-    if (distance > 0):
+    if distance > 0:
         return 1
     else:
         return 0
 
 def quasi_criterion(indifference_threshold, distance):
     """ implements quasi criterion """
-    if (distance > indifference_threshold):
+    if distance > indifference_threshold:
         return 1
     else:
         return 0
 
 def linear_criterion(preference_threshold, distance):
     """ implements linear criterion without indifference threshold """
-    if (distance < 0):
+    if distance < 0:
         return 0
-    elif (distance < preference_threshold):
+    elif distance < preference_threshold:
         return distance*1.0 / preference_threshold
     else:
         return 1
 
 def linear_indifference__criterion(indifference_threshold, preference_threshold, distance):
     """ implements linear criterion with indifference threshold """
-    if (distance < indifference_threshold):
+    if distance < indifference_threshold:
         return 0
-    elif (distance < preference_threshold):
+    elif distance < preference_threshold:
         return ((distance-indifference_threshold) / (preference_threshold-indifference_threshold))
     else:
         return 1
 
 def level_criterion(indifference_threshold, preference_threshold, distance):
     """ implements level criterion """
-    if (distance < indifference_threshold):
+    if distance < indifference_threshold:
         return 0
-    elif (distance < preference_threshold):
+    elif distance < preference_threshold:
         return 0.5
     else:
         return 1

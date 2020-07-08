@@ -29,7 +29,7 @@ def result_in_json(sorted_alternatives, sorted_scores):
 def negate_columns(decision_matrix, optimization_type):
     """ negate columns of decision matrix in case optimization type is 1 (minimize) """
     for j in range(len(optimization_type)):
-        if (optimization_type[j] == 1):
+        if optimization_type[j] == 1:
             for i in range(len(decision_matrix)):
                 decision_matrix[i][j] = decision_matrix[i][j]*(-1.0)
     return decision_matrix

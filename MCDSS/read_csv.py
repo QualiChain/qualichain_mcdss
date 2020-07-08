@@ -38,7 +38,7 @@ def read_criteria_details(method, file_path):
         weights[j] = float(data[weights_index[0][0]][j + weights_index[0][1] + 1])
         optimization_type[j] = int(data[optimization_types_index[0][0]][j + optimization_types_index[0][1] +1 ])
 
-    if (method == "Electre I"):
+    if method == "Electre I":
         agreement_threshold_index = np.argwhere(data == 'Agreement Threshold')
         veto_thresholds_index = np.argwhere(data == 'Veto Thresholds')
         agreement_threshold = float(data[agreement_threshold_index[0][0]][agreement_threshold_index[0][1] + 1])
@@ -46,7 +46,7 @@ def read_criteria_details(method, file_path):
         for j in range(number_of_criteria):
             veto_thresholds[j] = float(data[veto_thresholds_index[0][0]][j + veto_thresholds_index[0][1] + 1])
         return agreement_threshold, weights, veto_thresholds, optimization_type
-    elif (method == "Promethee II"):
+    elif method == "Promethee II":
         preference_thresholds_index = np.argwhere(data == 'Preference Thresholds')
         indifference_threshold_index = np.argwhere(data == 'Indifference Thresholds')
         criteria_types_index = np.argwhere(data == 'Criteria Types')

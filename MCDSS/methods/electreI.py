@@ -35,9 +35,9 @@ def calculate_agreement_matrix(decision_matrix, weights):
     for i in range(len(decision_matrix)):
         for j in range(i+1, len(decision_matrix)):
             for k in range(len(decision_matrix[0])):
-                if (decision_matrix[i][k] > decision_matrix[j][k]):
+                if decision_matrix[i][k] > decision_matrix[j][k]:
                     agreement_matrix[i][j] += weights[k]
-                elif (decision_matrix[i][k] == decision_matrix[j][k]):
+                elif decision_matrix[i][k] == decision_matrix[j][k]:
                     agreement_matrix[i][j] += weights[k]
                     agreement_matrix[j][i] += weights[k]
                 else:
@@ -50,7 +50,7 @@ def calculate_disagreement_matrix(decision_matrix, veto_thresholds):
     for i in range(len(decision_matrix)):
         for j in range(len(decision_matrix)):
                 for k in range(len(decision_matrix[0])):
-                    if (veto_thresholds[k] > 0 and decision_matrix[j][k] - decision_matrix[i][k] >= veto_thresholds[k]):
+                    if veto_thresholds[k] > 0 and (decision_matrix[j][k] - decision_matrix[i][k]) >= veto_thresholds[k]:
                         disagreement_matrix[i][j] = 1
     return disagreement_matrix
 
@@ -59,6 +59,6 @@ def calculate_dominance_table(agreement_matrix, disagreement_matrix, agreement_t
     dominance_matrix = np.zeros((len(agreement_matrix), len(agreement_matrix)), int)
     for i in range(len(agreement_matrix)):
         for j in range(len(agreement_matrix)):
-            if (i != j and agreement_matrix[i][j] >= agreement_threshold and disagreement_matrix[i][j] == 0):
+            if i != j and agreement_matrix[i][j] >= agreement_threshold and disagreement_matrix[i][j] == 0:
                 dominance_matrix[i][j] = 1
     return dominance_matrix
