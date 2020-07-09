@@ -3,7 +3,7 @@
 The Multi-Criteria Decision Support System facilitates the decision-making process by taking into account all the meaningful criteria.  
 As of now the implemented methods are the following: MAUT, Topsis, Electre I and Promethee II.
 
-You can access the MCDSS from port 5000.
+You can access the MCDSS from port `5000`.
 
 ## Local Installation
 
@@ -22,7 +22,50 @@ The MCDSS API receives POST requests that contain the following:
 2.	a UTF-8 encoded csv file that contains the Decision Matrix
 3.	a UTF-8 encoded csv file that contains the Criteria Details
 
-Information and examples of the csv files can be found in folder [/Input_Templates](https://gitlab.epu.ntua.gr/qualichain/qualichain-mcdss/-/tree/master/Input_Templates).
+#### Decision Matrix CSV
+
+The “Decision Matrix” file includes information about the number of alternatives, the number of criteria and the decision matrix. 
+The text that appears in bold should not be changed.
+
+|**Number of alternatives**||||||
+|----|----|----|----|----|----|
+|**Number of criteria**||||||
+|**Alternatives / Criteria**|Criterion 1|Criterion 2|Criterion 3|Criterion 4|...|
+|Alternative 1||||||
+|Alternative 2||||||
+|Alternative 3||||||
+|Alternative 4||||||
+|Alternative 5||||||
+|...||||||
+
+Examples of Decision Matrix csv files can be found in folder [/Input_Templates](https://gitlab.epu.ntua.gr/qualichain/qualichain-mcdss/-/tree/master/Input_Templates).
+
+#### Criteria Details CSV
+
+The “Criteria Details” file includes information about the number of criteria, their weights, optimization types and types, and different types of thresholds (veto, preference, etc.). 
+The text that appears in bold should not be changed.
+
+|**Number of criteria**||||||
+|----|----|----|----|----|----|
+|**Agreement Threshold**||||||
+||Criterion 1|Criterion 2|Criterion 3|Criterion 4|...|
+|**Weights**||||||
+|**Optimization Type**||||||
+|**Veto Thresholds**||||||
+|**Preference Thresholds**||||||
+|**Indifference Thresholds**||||||
+|**Criteria Types**||||||
+
+Optimization types can only take values of 0 or 1, with 0 denoting that the criterion is profit maximization and 1 denoting that it is cost minimization.  
+The criteria types, used in Promethee II, can only take the following values: usual, quasi, linear, linear with indifference threshold, and level.  
+All thresholds can only take nonnegative value.
+
+Each method requires a specific set of cells to be filled.
+*	In case the preferred method is either “Maut” or “Topsis”, users should insert information about the number of criteria, the weights, and the optimization types.
+*	In case the preferred method is “Electre I”, users should insert information about the number of criteria, the weights, the optimization types, the agreement threshold, and the veto thresholds.
+*	In case the preferred method is “Promethee II”, users should insert information about the number of criteria, the weights, the optimization types, the preference thresholds, the indifference thresholds, and the criteria types.
+
+Examples of Criteria Details csv files can be found in folder [/Input_Templates](https://gitlab.epu.ntua.gr/qualichain/qualichain-mcdss/-/tree/master/Input_Templates).
 
 ### Request Example
 
