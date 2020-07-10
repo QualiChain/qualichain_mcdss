@@ -33,7 +33,7 @@ def main(decision_matrix_file_path, criteria_specification_file_path):
     sorted_net_flows, sorted_net_alternatives = sort_alternatives(net_flow, alternatives, True)
     # create result as json object, each json object consists of the alternative name, score and ranking
     result = result_in_json(sorted_net_alternatives, sorted_net_flows)
-    return result
+    return result, 200
 
 def calculate_preference_matrix(decision_matrix, criteria_types, preference_thresholds, indifference_thresholds, normalized_weights):
     """ calculates the preference matrix for promithee """

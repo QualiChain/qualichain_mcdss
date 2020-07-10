@@ -35,7 +35,7 @@ def main(decision_matrix_file_path, criteria_specification_file_path):
     # create result as json object, result consists of the dominance table and the alternatives
     result = []
     result.append({"Dominance Table": dominance_matrix.tolist(), "Alternatives": alternatives})
-    return jsonify(result)
+    return jsonify(result), 200
 
 
 def calculate_agreement_matrix(decision_matrix, weights):

@@ -37,7 +37,7 @@ def main(decision_matrix_file_path, criteria_specification_file_path):
     sorted_utility_scores, sorted_alternatives = sort_alternatives(utility_scores, alternatives, True)
     # create result as json object, each json object consists of the alternative name, score and ranking
     result = result_in_json(sorted_alternatives, sorted_utility_scores)
-    return result
+    return result, 200
 
 def normalize_decision_matrix(decision_matrix, weights):
     """ normalizes the decision matrix using min - max """
