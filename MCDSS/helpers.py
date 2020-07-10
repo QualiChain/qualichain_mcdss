@@ -46,3 +46,27 @@ def save_file(file, path):
         return os.path.join(path, filename)
     else:
         return ""
+
+def check_uploaded_files(number_of_criteria, optimization_type, veto_thresholds=[], preference_thresholds=[], indifference_thresholds=[], criteria_types=[]):
+    for j in range(len(optimization_type)):
+        if optimization_type[j] != 0 and optimization_type[j] != 1:
+            raise Exception("Optimization types can only take values of 0 or 1")
+    if veto_thresholds != []:
+        for j in range(len(veto_thresholds)):
+            if veto_thresholds[j] <0:
+                raise Exception("Veto thresholds can only take nonnegative values")
+    if preference_thresholds != []:
+        for j in range(len(preference_thresholds)):
+            if preference_thresholds[j] <0:
+                raise Exception("Preference thresholds can only take nonnegative values")
+    if indifference_thresholds != []:
+        for j in range(len(indifference_thresholds)):
+            if indifference_thresholds[j] <0:
+                raise Exception("Indiferrence thresholds can only take nonnegative values")
+    if criteria_types != []:
+        for j in range(len(criteria_types)):
+            if criteria_types[j] not in ["usual", "quasi", "linear", "linear with indifference threshold", "level"]:
+                raise Exception("The criteria types, used in Promethee II, can only take the following values: usual, quasi, linear, linear with indifference threshold, and level.  ")
+    if number_of_criteria != len(optimization_type):
+        raise Exception("Number of criteria should be the same in both files")
+    return
