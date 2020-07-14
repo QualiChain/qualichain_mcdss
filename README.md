@@ -3,7 +3,7 @@
 The Multi-Criteria Decision Support System facilitates the decision-making process by taking into account all the meaningful criteria.  
 As of now the implemented methods are the following: MAUT, Topsis, Electre I and Promethee II.
 
-You can access the MCDSS from port `9000`.
+You can access the MCDSS from port `7070`.
 
 ## Docker Installation
 
@@ -17,9 +17,9 @@ To install MCDSS using docker run the following command:
 2. Go to /MCDSS folder using the command: `cd MCDSS`
 3. Execute the command: `python3 -m flask run`
 
-## MCDSS API 
+## MCDSS API
 
-Access point: `http://127.0.0.1:9000/mcdss`
+Access point: `http://127.0.0.1:7070/mcdss`
 
 ### Input
 
@@ -30,7 +30,7 @@ The MCDSS API receives POST requests that contain the following:
 
 #### Decision Matrix CSV
 
-The “Decision Matrix” file includes information about the number of alternatives, the number of criteria and the decision matrix. 
+The “Decision Matrix” file includes information about the number of alternatives, the number of criteria and the decision matrix.
 The text that appears in bold should not be changed.
 
 |**Number of alternatives**||||||
@@ -48,7 +48,7 @@ Examples of Decision Matrix csv files can be found in folder [/Input_Templates](
 
 #### Criteria Details CSV
 
-The “Criteria Details” file includes information about the number of criteria, their weights, optimization types and types, and different types of thresholds (veto, preference, etc.). 
+The “Criteria Details” file includes information about the number of criteria, their weights, optimization types and types, and different types of thresholds (veto, preference, etc.).
 The text that appears in bold should not be changed.
 
 |**Number of criteria**||||||
@@ -86,9 +86,9 @@ curl --location --request POST 'http://127.0.0.1:5000/mcdss' \
 
 ### Response Examples
 
-The MCDSS returns as a response a list of JSON objects. 
+The MCDSS returns as a response a list of JSON objects.
 
-In case the used method is Maut, Topsis or Promethee II, the list contains one JSON object for each alternative which consists of the name of the respective 
+In case the used method is Maut, Topsis or Promethee II, the list contains one JSON object for each alternative which consists of the name of the respective
 alternative, its score and its rank. For example, the MCDSS can return:
 
 ```json
@@ -116,7 +116,7 @@ alternative, its score and its rank. For example, the MCDSS can return:
 ]
 ```
 
-In case the used method is ELECTRE I, the list contains only one JSON object which consists of a list of the names of all alternatives and the dominance matrix. 
+In case the used method is ELECTRE I, the list contains only one JSON object which consists of a list of the names of all alternatives and the dominance matrix.
 For example, the MCDSS can return:
 
 ```json
