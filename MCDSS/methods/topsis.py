@@ -5,7 +5,7 @@ import logging
 import math
 import sys
 from read_csv import read_criteria_details, read_decision_matrix
-from helpers import normalize_weights, sort_alternatives, result_in_json, negate_columns, check_uploaded_files
+from helpers import normalize_weights, sort_alternatives, result_in_json, negate_columns, check_uploaded_files, delete_file
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -21,8 +21,9 @@ def main(decision_matrix_file_path, criteria_specification_file_path):
     except Exception as ex:
         log.error(ex)
         return "Wrong configuration of the uploaded files", 400
-
-    #print(check_uploaded_files())
+    # delete uploaded csv files
+    delete_file(decision_matrix_file_path)
+    delete_file(criteria_specification_file_path)
     # negate columns of decision matrix in case optimization type is 1 (minimize)
     decision_matrix = negate_columns(decision_matrix, optimization_type)
     # normalize weights

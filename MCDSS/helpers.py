@@ -70,3 +70,8 @@ def check_uploaded_files(number_of_criteria, optimization_type, veto_thresholds=
     if number_of_criteria != len(optimization_type):
         raise Exception("Number of criteria should be the same in both files")
     return
+
+def delete_file(file_path):
+    """ delete csv file after usage """
+    os.remove(file_path)
+    return
