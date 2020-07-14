@@ -4,7 +4,7 @@ import pandas as pd
 import math
 import logging
 import sys
-from read_csv import read_criteria_details, read_decision_matrix
+from csv_loaders import read_criteria_details, read_decision_matrix
 from helpers import normalize_weights, sort_alternatives, result_in_json, negate_columns, check_uploaded_files, delete_file
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO,
