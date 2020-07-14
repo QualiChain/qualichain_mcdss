@@ -19,7 +19,7 @@ To install MCDSS using docker run the following command:
 
 ## MCDSS API 
 
-Access point: `http://127.0.0.1:5000/mcdss`
+Access point: `http://127.0.0.1:9000/mcdss`
 
 ### Input
 
