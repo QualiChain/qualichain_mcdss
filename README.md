@@ -3,7 +3,13 @@
 The Multi-Criteria Decision Support System facilitates the decision-making process by taking into account all the meaningful criteria.  
 As of now the implemented methods are the following: MAUT, Topsis, Electre I and Promethee II.
 
-You can access the MCDSS from port `5000`.
+You can access the MCDSS from port `9000`.
+
+## Docker Installation
+
+To install MCDSS using docker run the following command:
+
+1. Build project: `docker-compose up -d --build`
 
 ## Local Installation
 
