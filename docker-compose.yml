@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  qualichain_mcdss:
+    hostname: qualichain_mcdss
+    container_name: qualichain_mcdss
+    restart: always
+    build:
+      context: "."
+    ports:
+      - 9000:9000

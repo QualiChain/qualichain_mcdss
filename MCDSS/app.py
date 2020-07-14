@@ -1,9 +1,15 @@
 import os
+import sys
+import logging
 from flask import Flask, request, jsonify, redirect, url_for, send_from_directory
 from flask_cors import CORS
 from methods import maut, prometheeII, topsis, electreI
-from settings import ALLOWED_EXTENSIONS, UPLOAD_FOLDER
+from settings import ALLOWED_EXTENSIONS, UPLOAD_FOLDER, API_PORT
 from helpers import allowed_file, save_file
+
+logging.basicConfig(stream=sys.stdout, level=logging.INFO,
+                    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+log = logging.getLogger(__name__)
 
 app = Flask(__name__)
 CORS(app)
@@ -43,3 +49,8 @@ def mcdss():
             return "Method does not exist", 404
     else:
         return "Method not specified", 404
+
+if __name__ == '__main__':
+    log.info("Starting Qualichain MCDSS")
+    app.secret_key = os.urandom(24)
+    app.run(host='0.0.0.0', port=API_PORT, debug=True)
