@@ -3,6 +3,7 @@ FROM python:3.7-slim
 
 #set the working directory
 WORKDIR /opt/qualichain_mcdss
+RUN mkdir -p ./MCDSS/uploads
 
 #install Project requirements
 COPY requirements.txt .
