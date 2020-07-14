@@ -19,8 +19,8 @@ Access point: `http://127.0.0.1:5000/mcdss`
 
 The MCDSS API receives POST requests that contain the following:
 1.	the preferred method which can only take the following values: Maut, Topsis, Promethee II, and Electre I
-2.	a UTF-8 encoded csv file that contains the Decision Matrix
-3.	a UTF-8 encoded csv file that contains the Criteria Details
+2.	a UTF-8 encoded csv file that contains the Decision Matrix (a point (.) should be used as decimal separator, while semicolon (;) is the csv separator)
+3.	a UTF-8 encoded csv file that contains the Criteria Details (a point (.) should be used as decimal separator, while semicolon (;) is the csv separator)
 
 #### Decision Matrix CSV
 
