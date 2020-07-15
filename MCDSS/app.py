@@ -62,6 +62,22 @@ def mcdss_prometheeII():
         log.error(ex)
         return str(ex).encode('utf-8'), 400
 
+@app.route("/mcdss/electreI", methods=['POST'])
+def mcdss_electreI():
+    """ electre I method """
+    try:
+        # get uploaded files
+        decision_matrix_file_path, criteria_details_file_path = upload_csv_files(request.files, app.config['UPLOAD_FOLDER'])
+        # call topsis method
+        dominance_matrix, alternatives = electreI.main(decision_matrix_file_path, criteria_details_file_path)
+        # create result as json object, result consists of the dominance table and the alternatives
+        result = []
+        result.append({"Dominance Table": dominance_matrix.tolist(), "Alternatives": alternatives})
+        return jsonify(result), 200
+    except Exception as ex:
+        log.error(ex)
+        return str(ex).encode('utf-8'), 400
+
 @app.route("/mcdss", methods=['POST'])
 def mcdss():
     try:
@@ -84,7 +100,10 @@ def mcdss():
                 result = result_in_json(sorted_net_alternatives, sorted_net_flows)
                 return result, 200
             elif method == "Electre I":
-                return electreI.main(decision_matrix_file_path, criteria_details_file_path)
+                dominance_matrix, alternatives = electreI.main(decision_matrix_file_path, criteria_details_file_path)
+                result = []
+                result.append({"Dominance Table": dominance_matrix.tolist(), "Alternatives": alternatives})
+                return jsonify(result), 200
             else:
                 return "Method does not exist", 404
         else:

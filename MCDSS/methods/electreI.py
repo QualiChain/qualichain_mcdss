@@ -12,35 +12,6 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 log = logging.getLogger(__name__)
 
-def main(decision_matrix_file_path, criteria_specification_file_path):
-    """ electre method implementation """
-    # read file
-    try:
-        number_of_criteria, number_of_alternatives, alternatives, decision_matrix = read_decision_matrix(decision_matrix_file_path)
-        agreement_threshold, weights, veto_thresholds, optimization_type = read_criteria_details('Electre I', criteria_specification_file_path)
-        check_uploaded_files(number_of_criteria, optimization_type, veto_thresholds)
-    except Exception as ex:
-        log.error(ex)
-        return "Wrong configuration of the uploaded files", 400
-    # delete uploaded csv files
-    delete_file(decision_matrix_file_path)
-    delete_file(criteria_specification_file_path)
-    # negate columns of decision matrix in case optimization type is 1 (minimize)
-    decision_matrix = negate_columns(decision_matrix, optimization_type)
-    # normalize weights
-    normalized_weights = normalize_weights(weights)
-    # create Agreement Table
-    agreement_matrix = calculate_agreement_matrix(decision_matrix, normalized_weights)
-    # create Disagreement Table
-    disagreement_matrix = calculate_disagreement_matrix(decision_matrix, veto_thresholds)
-    # create Dominance Table
-    dominance_matrix = calculate_dominance_table(agreement_matrix, disagreement_matrix, agreement_threshold)
-    # create result as json object, result consists of the dominance table and the alternatives
-    result = []
-    result.append({"Dominance Table": dominance_matrix.tolist(), "Alternatives": alternatives})
-    return jsonify(result), 200
-
-
 def calculate_agreement_matrix(decision_matrix, weights):
     """ calculaties the agreement matrix for electre """
     agreement_matrix = np.zeros((len(decision_matrix), len(decision_matrix)), float)
@@ -75,3 +46,24 @@ def calculate_dominance_table(agreement_matrix, disagreement_matrix, agreement_t
             if i != j and agreement_matrix[i][j] >= agreement_threshold and disagreement_matrix[i][j] == 0:
                 dominance_matrix[i][j] = 1
     return dominance_matrix
+
+def main(decision_matrix_file_path, criteria_specification_file_path):
+    """ electre method implementation """
+    # read file
+    number_of_criteria, number_of_alternatives, alternatives, decision_matrix = read_decision_matrix(decision_matrix_file_path)
+    agreement_threshold, weights, veto_thresholds, optimization_type = read_criteria_details('Electre I', criteria_specification_file_path)
+    check_uploaded_files(number_of_criteria, optimization_type, veto_thresholds)
+    # delete uploaded csv files
+    delete_file(decision_matrix_file_path)
+    delete_file(criteria_specification_file_path)
+    # negate columns of decision matrix in case optimization type is 1 (minimize)
+    decision_matrix = negate_columns(decision_matrix, optimization_type)
+    # normalize weights
+    normalized_weights = normalize_weights(weights)
+    # create Agreement Table
+    agreement_matrix = calculate_agreement_matrix(decision_matrix, normalized_weights)
+    # create Disagreement Table
+    disagreement_matrix = calculate_disagreement_matrix(decision_matrix, veto_thresholds)
+    # create Dominance Table
+    dominance_matrix = calculate_dominance_table(agreement_matrix, disagreement_matrix, agreement_threshold)
+    return dominance_matrix, alternatives
