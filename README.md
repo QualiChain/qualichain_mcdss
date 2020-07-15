@@ -15,6 +15,7 @@ To install MCDSS using docker run the following command:
 
 1. Install Requirements: `pip install -r requirements.txt`
 2. Go to /MCDSS folder using the command: `cd MCDSS`
+3. Create a folder named **uploads** inside MCDSS folder using the command: `mkdir uploads`
 3. Execute the command: `python3 -m flask run`
 
 ## MCDSS API
