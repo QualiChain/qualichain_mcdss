@@ -26,42 +26,45 @@ def read_decision_matrix(file_path):
 
 
 def read_criteria_details(method, file_path):
-    """ read criteria details """
-    with open(file_path, 'r', encoding='utf-8-sig') as csvfile:
-        data = list(csv.reader(csvfile, delimiter=';'))
-    data = np.array(data)
-    number_of_criteria_index = np.argwhere(data == 'Number of criteria')
-    weights_index = np.argwhere(data == 'Weights')
-    optimization_types_index = np.argwhere(data == 'Optimization Type')
-    number_of_criteria = int(data[number_of_criteria_index[0][0]][number_of_criteria_index[0][1] + 1])
-    weights = [0 for j in range(number_of_criteria)]
-    optimization_type = [0 for j in range(number_of_criteria)]
-    for j in range(number_of_criteria):
-        weights[j] = float(data[weights_index[0][0]][j + weights_index[0][1] + 1])
-        optimization_type[j] = int(data[optimization_types_index[0][0]][j + optimization_types_index[0][1] +1 ])
+    try:
+        """ read criteria details """
+        with open(file_path, 'r', encoding='utf-8-sig') as csvfile:
+            data = list(csv.reader(csvfile, delimiter=';'))
+        data = np.array(data)
+        number_of_criteria_index = np.argwhere(data == 'Number of criteria')
+        weights_index = np.argwhere(data == 'Weights')
+        optimization_types_index = np.argwhere(data == 'Optimization Type')
+        number_of_criteria = int(data[number_of_criteria_index[0][0]][number_of_criteria_index[0][1] + 1])
+        weights = [0 for j in range(number_of_criteria)]
+        optimization_type = [0 for j in range(number_of_criteria)]
+        for j in range(number_of_criteria):
+            weights[j] = float(data[weights_index[0][0]][j + weights_index[0][1] + 1])
+            optimization_type[j] = int(data[optimization_types_index[0][0]][j + optimization_types_index[0][1] +1 ])
 
-    if method == "Electre I":
-        agreement_threshold_index = np.argwhere(data == 'Agreement Threshold')
-        veto_thresholds_index = np.argwhere(data == 'Veto Thresholds')
-        agreement_threshold = float(data[agreement_threshold_index[0][0]][agreement_threshold_index[0][1] + 1])
-        veto_thresholds = [0 for j in range(number_of_criteria)]
-        for j in range(number_of_criteria):
-            veto_thresholds[j] = float(data[veto_thresholds_index[0][0]][j + veto_thresholds_index[0][1] + 1])
-        return agreement_threshold, weights, veto_thresholds, optimization_type
-    elif method == "Promethee II":
-        preference_thresholds_index = np.argwhere(data == 'Preference Thresholds')
-        indifference_threshold_index = np.argwhere(data == 'Indifference Thresholds')
-        criteria_types_index = np.argwhere(data == 'Criteria Types')
-        preference_thresholds = [0 for j in range(number_of_criteria)]
-        indifference_thresholds = [0 for j in range(number_of_criteria)]
-        criteria_types = ["" for j in range(number_of_criteria)]
-        for j in range(number_of_criteria):
-            preference_thresholds[j]= float(data[preference_thresholds_index[0][0]][j + preference_thresholds_index[0][1] + 1])
-            indifference_thresholds[j]= float(data[indifference_threshold_index[0][0]][j + indifference_threshold_index[0][1] + 1])
-            criteria_types[j] = data[criteria_types_index[0][0]][j + criteria_types_index[0][1] + 1]
-        return weights, preference_thresholds, indifference_thresholds, optimization_type, criteria_types
-    else:
-        return weights, optimization_type
+        if method == "Electre I":
+            agreement_threshold_index = np.argwhere(data == 'Agreement Threshold')
+            veto_thresholds_index = np.argwhere(data == 'Veto Thresholds')
+            agreement_threshold = float(data[agreement_threshold_index[0][0]][agreement_threshold_index[0][1] + 1])
+            veto_thresholds = [0 for j in range(number_of_criteria)]
+            for j in range(number_of_criteria):
+                veto_thresholds[j] = float(data[veto_thresholds_index[0][0]][j + veto_thresholds_index[0][1] + 1])
+            return agreement_threshold, weights, veto_thresholds, optimization_type
+        elif method == "Promethee II":
+            preference_thresholds_index = np.argwhere(data == 'Preference Thresholds')
+            indifference_threshold_index = np.argwhere(data == 'Indifference Thresholds')
+            criteria_types_index = np.argwhere(data == 'Criteria Types')
+            preference_thresholds = [0 for j in range(number_of_criteria)]
+            indifference_thresholds = [0 for j in range(number_of_criteria)]
+            criteria_types = ["" for j in range(number_of_criteria)]
+            for j in range(number_of_criteria):
+                preference_thresholds[j]= float(data[preference_thresholds_index[0][0]][j + preference_thresholds_index[0][1] + 1])
+                indifference_thresholds[j]= float(data[indifference_threshold_index[0][0]][j + indifference_threshold_index[0][1] + 1])
+                criteria_types[j] = data[criteria_types_index[0][0]][j + criteria_types_index[0][1] + 1]
+            return weights, preference_thresholds, indifference_thresholds, optimization_type, criteria_types
+        else:
+            return weights, optimization_type
+    except Exception as ex:
+        raise Exception("Wrong configuration of the uploaded files")
 
 def upload_csv_files(files, upload_folder):
     """ get uploaded files """

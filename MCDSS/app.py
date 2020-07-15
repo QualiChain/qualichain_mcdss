@@ -47,6 +47,21 @@ def mcdss_topsis():
         log.error(ex)
         return str(ex).encode('utf-8'), 400
 
+@app.route("/mcdss/prometheeII", methods=['POST'])
+def mcdss_prometheeII():
+    """ promethee II method """
+    try:
+        # get uploaded files
+        decision_matrix_file_path, criteria_details_file_path = upload_csv_files(request.files, app.config['UPLOAD_FOLDER'])
+        # call topsis method
+        sorted_net_flows, sorted_net_alternatives = prometheeII.main(decision_matrix_file_path, criteria_details_file_path)
+        # create result as json object, each json object consists of the alternative name, score and ranking
+        result = result_in_json(sorted_net_alternatives, sorted_net_flows)
+        return result, 200
+    except Exception as ex:
+        log.error(ex)
+        return str(ex).encode('utf-8'), 400
+
 @app.route("/mcdss", methods=['POST'])
 def mcdss():
     try:
@@ -65,7 +80,9 @@ def mcdss():
                 result = result_in_json(sorted_alternatives, sorted_closeness)
                 return result, 200
             elif method == "Promethee II":
-                return prometheeII.main(decision_matrix_file_path, criteria_details_file_path)
+                sorted_net_flows, sorted_net_alternatives = prometheeII.main(decision_matrix_file_path, criteria_details_file_path)
+                result = result_in_json(sorted_net_alternatives, sorted_net_flows)
+                return result, 200
             elif method == "Electre I":
                 return electreI.main(decision_matrix_file_path, criteria_details_file_path)
             else:

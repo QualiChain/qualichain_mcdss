@@ -11,33 +11,6 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 log = logging.getLogger(__name__)
 
-def main(decision_matrix_file_path, criteria_specification_file_path):
-    """ promethee II method implementation """
-    # read file
-    try:
-        number_of_criteria, number_of_alternatives, alternatives, decision_matrix = read_decision_matrix(decision_matrix_file_path)
-        weights, preference_thresholds, indifference_thresholds, optimization_type, criteria_types = read_criteria_details('Promethee II', criteria_specification_file_path)
-        check_uploaded_files(number_of_criteria, optimization_type, [], preference_thresholds, indifference_thresholds, criteria_types)
-    except Exception as ex:
-        log.error(ex)
-        return "Wrong configuration of the uploaded files", 400
-    # delete uploaded csv files
-    delete_file(decision_matrix_file_path)
-    delete_file(criteria_specification_file_path)
-    # negate columns of decision matrix in case optimization type is 1 (minimize)
-    decision_matrix = negate_columns(decision_matrix, optimization_type)
-    # normalize weights
-    normalized_weights = normalize_weights(weights)
-    # create preference matrix
-    preference_matrix = calculate_preference_matrix(decision_matrix, criteria_types, preference_thresholds, indifference_thresholds, normalized_weights)
-    # calculate dominance
-    positive_flow, negative_flow, net_flow = calculate_flows(preference_matrix)
-    #sort alternatives
-    sorted_net_flows, sorted_net_alternatives = sort_alternatives(net_flow, alternatives, True)
-    # create result as json object, each json object consists of the alternative name, score and ranking
-    result = result_in_json(sorted_net_alternatives, sorted_net_flows)
-    return result, 200
-
 def calculate_preference_matrix(decision_matrix, criteria_types, preference_thresholds, indifference_thresholds, normalized_weights):
     """ calculates the preference matrix for promithee """
     preference_matrix = np.zeros((len(decision_matrix), len(decision_matrix)), float)
@@ -115,3 +88,24 @@ def level_criterion(indifference_threshold, preference_threshold, distance):
         return 0.5
     else:
         return 1
+
+def main(decision_matrix_file_path, criteria_specification_file_path):
+    """ promethee II method implementation """
+    # read file
+    number_of_criteria, number_of_alternatives, alternatives, decision_matrix = read_decision_matrix(decision_matrix_file_path)
+    weights, preference_thresholds, indifference_thresholds, optimization_type, criteria_types = read_criteria_details('Promethee II', criteria_specification_file_path)
+    check_uploaded_files(number_of_criteria, optimization_type, [], preference_thresholds, indifference_thresholds, criteria_types)
+    # delete uploaded csv files
+    delete_file(decision_matrix_file_path)
+    delete_file(criteria_specification_file_path)
+    # negate columns of decision matrix in case optimization type is 1 (minimize)
+    decision_matrix = negate_columns(decision_matrix, optimization_type)
+    # normalize weights
+    normalized_weights = normalize_weights(weights)
+    # create preference matrix
+    preference_matrix = calculate_preference_matrix(decision_matrix, criteria_types, preference_thresholds, indifference_thresholds, normalized_weights)
+    # calculate dominance
+    positive_flow, negative_flow, net_flow = calculate_flows(preference_matrix)
+    #sort alternatives
+    sorted_net_flows, sorted_net_alternatives = sort_alternatives(net_flow, alternatives, True)
+    return sorted_net_flows, sorted_net_alternatives
