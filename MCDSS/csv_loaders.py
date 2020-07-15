@@ -1,6 +1,8 @@
 import io
+import sys
 import csv
 import numpy as np
+from helpers import allowed_file, save_file
 
 def read_decision_matrix(file_path):
     """ read decision matrix """
@@ -60,3 +62,22 @@ def read_criteria_details(method, file_path):
         return weights, preference_thresholds, indifference_thresholds, optimization_type, criteria_types
     else:
         return weights, optimization_type
+
+def upload_csv_files(files, upload_folder):
+    """ get uploaded files """
+    if 'Decision Matrix' not in files or ('Criteria Details' not in files):
+        raise Exception("Both the Decision Matrix file and the Criteria Details file are required")
+    decision_matrix_file = files['Decision Matrix']
+    criteria_details_file = files['Criteria Details']
+    # check for uploaded files
+    if decision_matrix_file.filename == '' or criteria_details_file.filename == '':
+        raise Exception("Select files for upload")
+    # check file type of decision matrix file and save file
+    decision_matrix_file_path = save_file(decision_matrix_file, upload_folder)
+    if decision_matrix_file_path == '':
+        raise Exception("Allowed file type is csv")
+    # check file type of criteria details file and save file
+    criteria_details_file_path = save_file(criteria_details_file, upload_folder)
+    if criteria_details_file_path == '':
+        raise Exception("Allowed file type is csv")
+    return decision_matrix_file_path, criteria_details_file_path
