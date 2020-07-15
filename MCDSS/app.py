@@ -32,6 +32,20 @@ def mcdss_maut():
         log.error(ex)
         return str(ex).encode('utf-8'), 400
 
+@app.route("/mcdss/topsis", methods=['POST'])
+def mcdss_topsis():
+    """ topsis method """
+    try:
+        # get uploaded files
+        decision_matrix_file_path, criteria_details_file_path = upload_csv_files(request.files, app.config['UPLOAD_FOLDER'])
+        # call topsis method
+        sorted_closeness, sorted_alternatives = topsis.main(decision_matrix_file_path, criteria_details_file_path)
+        # create result as json object, each json object consists of the alternative name, score and ranking
+        result = result_in_json(sorted_alternatives, sorted_closeness)
+        return result, 200
+    except Exception as ex:
+        log.error(ex)
+        return str(ex).encode('utf-8'), 400
 
 @app.route("/mcdss", methods=['POST'])
 def mcdss():
@@ -47,7 +61,9 @@ def mcdss():
                 result = result_in_json(sorted_alternatives, sorted_utility_scores)
                 return result, 200
             elif method == "Topsis":
-                return topsis.main(decision_matrix_file_path, criteria_details_file_path)
+                sorted_closeness, sorted_alternatives = topsis.main(decision_matrix_file_path, criteria_details_file_path)
+                result = result_in_json(sorted_alternatives, sorted_closeness)
+                return result, 200
             elif method == "Promethee II":
                 return prometheeII.main(decision_matrix_file_path, criteria_details_file_path)
             elif method == "Electre I":

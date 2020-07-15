@@ -11,37 +11,6 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 log = logging.getLogger(__name__)
 
-def main(decision_matrix_file_path, criteria_specification_file_path):
-    """ topsis method implementation """
-    # read file
-    try:
-        number_of_criteria, number_of_alternatives, alternatives, decision_matrix = read_decision_matrix(decision_matrix_file_path)
-        weights, optimization_type = read_criteria_details('Topsis', criteria_specification_file_path)
-        check_uploaded_files(number_of_criteria, optimization_type)
-    except Exception as ex:
-        log.error(ex)
-        return "Wrong configuration of the uploaded files", 400
-    # delete uploaded csv files
-    delete_file(decision_matrix_file_path)
-    delete_file(criteria_specification_file_path)
-    # negate columns of decision matrix in case optimization type is 1 (minimize)
-    decision_matrix = negate_columns(decision_matrix, optimization_type)
-    # normalize weights
-    normalized_weights = normalize_weights(weights)
-    # normalize decision_matrix
-    normalized_decision_matrix = normalize_decision_matrix_squares(decision_matrix, normalized_weights)
-    # calculate ideal and negative - ideal solutions
-    ideal_solution, negative_ideal_solution = calculate_ideal_solutions(normalized_decision_matrix)
-    # calculate separation distances
-    distance_ideal, distance_negative_ideal = calculate_separation_distances(normalized_decision_matrix, ideal_solution, negative_ideal_solution)
-    # calculate relative closeness to the ideal solution
-    closeness = calculate_closeness(distance_ideal, distance_negative_ideal)
-    # sort alternatives by score
-    sorted_closeness, sorted_alternatives = sort_alternatives(closeness, alternatives, True)
-    # create result as json object, each json object consists of the alternative name, score and ranking
-    result = result_in_json(sorted_alternatives, sorted_closeness)
-    return result, 200
-
 def normalize_decision_matrix_squares(decision_matrix, weights):
     """ normalizes the decision matrix using the root sum square"""
     normalized_decision_matrix = [[0 for j in range(len(decision_matrix[0]))] for i in range(len(decision_matrix))]
@@ -83,3 +52,28 @@ def calculate_closeness(distance_ideal, distance_negative_ideal):
     for i in range(len(distance_ideal)):
         closeness[i] = round(distance_negative_ideal[i]*1.0 / (distance_ideal[i] + distance_negative_ideal[i]), 4)
     return closeness
+
+def main(decision_matrix_file_path, criteria_specification_file_path):
+    """ topsis method implementation """
+    # read file
+    number_of_criteria, number_of_alternatives, alternatives, decision_matrix = read_decision_matrix(decision_matrix_file_path)
+    weights, optimization_type = read_criteria_details('Topsis', criteria_specification_file_path)
+    check_uploaded_files(number_of_criteria, optimization_type)
+    # delete uploaded csv files
+    delete_file(decision_matrix_file_path)
+    delete_file(criteria_specification_file_path)
+    # negate columns of decision matrix in case optimization type is 1 (minimize)
+    decision_matrix = negate_columns(decision_matrix, optimization_type)
+    # normalize weights
+    normalized_weights = normalize_weights(weights)
+    # normalize decision_matrix
+    normalized_decision_matrix = normalize_decision_matrix_squares(decision_matrix, normalized_weights)
+    # calculate ideal and negative - ideal solutions
+    ideal_solution, negative_ideal_solution = calculate_ideal_solutions(normalized_decision_matrix)
+    # calculate separation distances
+    distance_ideal, distance_negative_ideal = calculate_separation_distances(normalized_decision_matrix, ideal_solution, negative_ideal_solution)
+    # calculate relative closeness to the ideal solution
+    closeness = calculate_closeness(distance_ideal, distance_negative_ideal)
+    # sort alternatives by score
+    sorted_closeness, sorted_alternatives = sort_alternatives(closeness, alternatives, True)
+    return sorted_closeness, sorted_alternatives
