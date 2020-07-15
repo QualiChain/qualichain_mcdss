@@ -20,14 +20,20 @@ To install MCDSS using docker run the following command:
 
 ## MCDSS API
 
-Access point: `http://127.0.0.1:7070/mcdss`
+### Access points: 
+
+1. Maut: `http://127.0.0.1:7070/mcdss/maut`
+2. Topsis: `http://127.0.0.1:7070/mcdss/topsis`
+3. Electre I: `http://127.0.0.1:7070/mcdss/electreI`
+4. Promethee II: `http://127.0.0.1:7070/mcdss/prometheeII`
+5. General access point for all methods: `http://127.0.0.1:7070/mcdss`
 
 ### Input
 
 The MCDSS API receives POST requests that contain the following:
-1.	the preferred method which can only take the following values: Maut, Topsis, Promethee II, and Electre I
-2.	a UTF-8 encoded csv file that contains the Decision Matrix (a point (.) should be used as decimal separator, while semicolon (;) is the csv separator)
-3.	a UTF-8 encoded csv file that contains the Criteria Details (a point (.) should be used as decimal separator, while semicolon (;) is the csv separator)
+1.	a UTF-8 encoded csv file that contains the Decision Matrix (a point (.) should be used as decimal separator, while semicolon (;) is the csv separator)
+2.	a UTF-8 encoded csv file that contains the Criteria Details (a point (.) should be used as decimal separator, while semicolon (;) is the csv separator)
+3.  the preferred method which can only take the following values: Maut, Topsis, Promethee II, and Electre I **(only in case the access point `http://127.0.0.1:7070/mcdss` is used)**
 
 #### Decision Matrix CSV
 
@@ -74,9 +80,15 @@ Each method requires a specific set of cells to be filled.
 
 Examples of Criteria Details csv files can be found in folder [/Input_Templates](https://gitlab.epu.ntua.gr/qualichain/qualichain-mcdss/-/tree/master/Input_Templates).
 
-### Request Example
+### Request Examples
 
-This is an example API call that demonstrates how the Maut method can be invoked.
+This is an example API call that demonstrates the two different ways to invoke the Maut method.
+
+```curl
+curl --location --request POST 'http://127.0.0.1:7070/mcdss/maut' \
+--form 'Decision Matrix=@/qualichain-mcdss/Input_Templates/Decision_Matrix_Maut.csv' \
+--form 'Criteria Details=@/qualichain-mcdss/Input_Templates/Criteria_Specification_Maut.csv'
+```
 
 ```curl
 curl --location --request POST 'http://127.0.0.1:5000/mcdss' \
