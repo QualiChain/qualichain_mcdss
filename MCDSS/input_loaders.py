@@ -88,14 +88,6 @@ def upload_csv_files(files, upload_folder):
     delete_file(criteria_details_file_path)
     return decision_matrix, criteria_details
 
-def read_json(data):
-    decision_matrix_json = data[0]
-    criteria_details_json = data[1]
-    json_decision_matrix = np.array(decision_matrix_json['Decision Matrix'])
-    decision_matrix = create_decision_matrix(json_decision_matrix)
-    print(decision_matrix)
-    print(len(decision_matrix))
-
 def create_decision_matrix_json(json_decision_matrix):
     """ read decision matrix from json """
     number_of_alternatives = int(json_decision_matrix['Number of alternatives'])

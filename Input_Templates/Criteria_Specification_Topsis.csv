@@ -1,9 +1,0 @@
-﻿Number of criteria;4;;;
-Agreement Threshold;;;;
-;Criterion 1;Criterion 2;Criterion 3;Criterion 4
-Weights;0.35;0.15;0.3;0.2
-Optimization Type;1;1;1;0
-Veto Thresholds;;;;
-Preference Thresholds;;;;
-Indifference Thresholds;;;;
-Criteria Types;;;;

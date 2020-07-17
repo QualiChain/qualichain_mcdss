@@ -7,7 +7,7 @@ from flask_cors import CORS
 from methods import maut, prometheeII, topsis, electreI
 from settings import ALLOWED_EXTENSIONS, UPLOAD_FOLDER, API_PORT
 from helpers import allowed_file, save_file, result_in_json
-from input_loaders import upload_csv_files, read_json
+from input_loaders import upload_csv_files
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
