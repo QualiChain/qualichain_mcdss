@@ -1,0 +1,41 @@
+[
+  {
+    "Decision Matrix": [
+      {
+        "Number of alternatives": 4,
+        "Number of criteria": 6,
+        "Criteria": ["Criterion 1", "Criterion 2", "Criterion 3", "Criterion 4", "Criterion 5", "Criterion 6"],
+        "Alternatives Values": [
+            {
+                "Alternative name": "Alternative 1",
+                 "criteria_values": [5.6, 4.5, 1.14, 5.4, 3.5, 2.1]
+            },
+            {
+                "Alternative name": "Alternative 2",
+                 "criteria_values": [4.9, 2.5, 2.61, 4.05, 3, 2.4]
+            },
+            {
+                "Alternative name": "Alternative 3",
+                 "criteria_values": [5.6, 5.2, 0, 5.55, 4.5, 3.3]
+            },
+            {
+                "Alternative name": "Alternative 4",
+                 "criteria_values": [5.1, 4.2, 2.9, 3.85, 2.5, 1.5]
+            }
+        ]
+      }
+    ]
+  },
+  {
+    "Criteria Details": [
+      {
+        "Number of criteria": 6,
+        "Weights": [0.09, 0.14, 0.37, 0.11, 0.05, 0.24],
+        "Optimization Type": [0, 0, 1, 0, 0, 0],
+        "Preference Thresholds": [0.5, 0.6, 0, 0, 0, 1.0],
+        "Indifference Thresholds": [0.2, 0.3, 0, 0, 0, 0.5],
+        "Criteria Types": ["linear with indifference threshold", "linear with indifference threshold", "usual", "usual", "usual", "level"]
+      }
+    ]
+  }
+]

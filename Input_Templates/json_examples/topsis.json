@@ -1,0 +1,62 @@
+[
+  {
+    "Decision Matrix": [
+      {
+        "Number of alternatives": 10,
+        "Number of criteria": 4,
+        "Criteria": ["Criterion 1", "Criterion 2", "Criterion 3", "Criterion 4"],
+        "Alternatives Values": [
+            {
+                "Alternative name": "Alternative 1",
+                 "criteria_values": [1, 3, 5, 5]
+            },
+            {
+                "Alternative name": "Alternative 2",
+                 "criteria_values": [5, 4, 1, 4]
+            },
+            {
+                "Alternative name": "Alternative 3",
+                 "criteria_values": [3, 1, 4, 1]
+            },
+            {
+                "Alternative name": "Alternative 4",
+                 "criteria_values": [4, 2, 5, 2]
+            },
+            {
+                "Alternative name": "Alternative 5",
+                 "criteria_values": [3, 3, 3, 2]
+            },
+            {
+                "Alternative name": "Alternative 6",
+                 "criteria_values": [4, 5, 2, 3]
+            },
+            {
+                "Alternative name": "Alternative 7",
+                 "criteria_values": [2, 2, 2, 2]
+            },
+            {
+                "Alternative name": "Alternative 8",
+                 "criteria_values": [2, 1, 4, 1]
+            },
+            {
+                "Alternative name": "Alternative 9",
+                 "criteria_values": [4, 3, 2, 3]
+            },
+            {
+                "Alternative name": "Alternative 10",
+                 "criteria_values": [2, 2, 3, 1]
+            }
+        ]
+      }
+    ]
+  },
+  {
+    "Criteria Details": [
+      {
+        "Number of criteria": 4,
+        "Weights": [0.35, 0.15, 0.3, 0.2],
+        "Optimization Type": [1, 1, 1, 0]
+      }
+    ]
+  }
+]

@@ -1,0 +1,48 @@
+[
+  {
+    "Decision Matrix": [
+      {
+        "Number of alternatives": 6,
+        "Number of criteria": 5,
+        "Criteria": ["Criterion 1", "Criterion 2", "Criterion 3", "Criterion 4", "Criterion 5"],
+        "Alternatives Values": [
+            {
+                "Alternative name": "Alternative 1",
+                 "criteria_values": [-21000, 160, -6, 4, 220]
+            },
+            {
+                "Alternative name": "Alternative 2",
+                 "criteria_values": [-21000, 140, -5, 4, 225]
+            },
+            {
+                "Alternative name": "Alternative 3",
+                 "criteria_values": [-19000, 145, -7, 4, 210]
+            },
+            {
+                "Alternative name": "Alternative 4",
+                 "criteria_values": [-16000, 140, -6, 5, 200]
+            },
+            {
+                "Alternative name": "Alternative 5",
+                 "criteria_values": [-40000, 220, -9, 3, 260]
+            },
+            {
+                "Alternative name": "Alternative 6",
+                 "criteria_values": [-14000, 106, -4, 5, 190]
+            }
+        ]
+      }
+    ]
+  },
+  {
+    "Criteria Details": [
+      {
+        "Number of criteria": 5,
+        "Agreement Threshold": 0.65,
+        "Weights": [0.35, 0.15, 0.3, 0.15, 0.05],
+        "Optimization Type": [0, 0, 0, 0, 0],
+        "Veto Thresholds": [1000, 10, 0, 0, 0]
+      }
+    ]
+  }
+]
