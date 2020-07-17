@@ -20,13 +20,13 @@ To install MCDSS using docker run the following command:
 
 ## MCDSS API
 
-### Access points: 
+### Access points:
 
-1. Maut: `http://127.0.0.1:7070/mcdss/maut`
-2. Topsis: `http://127.0.0.1:7070/mcdss/topsis`
-3. Electre I: `http://127.0.0.1:7070/mcdss/electreI`
-4. Promethee II: `http://127.0.0.1:7070/mcdss/prometheeII`
-5. General access point for all methods: `http://127.0.0.1:7070/mcdss`
+1. Maut: `http://127.0.0.1:7070/file/mcdss/maut`
+2. Topsis: `http://127.0.0.1:7070/file/mcdss/topsis`
+3. Electre I: `http://127.0.0.1:7070/file/mcdss/electreI`
+4. Promethee II: `http://127.0.0.1:7070/file/mcdss/prometheeII`
+5. General access point for all methods: `http://127.0.0.1:7070/file/mcdss`
 
 ### Input
 

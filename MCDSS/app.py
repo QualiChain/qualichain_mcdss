@@ -17,7 +17,7 @@ CORS(app)
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-@app.route("/mcdss/maut", methods=['POST'])
+@app.route("/file/mcdss/maut", methods=['POST'])
 def mcdss_maut():
     """ maut method """
     try:
@@ -32,7 +32,7 @@ def mcdss_maut():
         log.error(ex)
         return str(ex).encode('utf-8'), 400
 
-@app.route("/mcdss/topsis", methods=['POST'])
+@app.route("/file/mcdss/topsis", methods=['POST'])
 def mcdss_topsis():
     """ topsis method """
     try:
@@ -47,7 +47,7 @@ def mcdss_topsis():
         log.error(ex)
         return str(ex).encode('utf-8'), 400
 
-@app.route("/mcdss/prometheeII", methods=['POST'])
+@app.route("/file/mcdss/prometheeII", methods=['POST'])
 def mcdss_prometheeII():
     """ promethee II method """
     try:
@@ -62,7 +62,7 @@ def mcdss_prometheeII():
         log.error(ex)
         return str(ex).encode('utf-8'), 400
 
-@app.route("/mcdss/electreI", methods=['POST'])
+@app.route("/file/mcdss/electreI", methods=['POST'])
 def mcdss_electreI():
     """ electre I method """
     try:
@@ -78,7 +78,7 @@ def mcdss_electreI():
         log.error(ex)
         return str(ex).encode('utf-8'), 400
 
-@app.route("/mcdss", methods=['POST'])
+@app.route("/file/mcdss", methods=['POST'])
 def mcdss():
     try:
         # get method
