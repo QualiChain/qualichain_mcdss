@@ -87,3 +87,54 @@ def upload_csv_files(files, upload_folder):
     delete_file(decision_matrix_file_path)
     delete_file(criteria_details_file_path)
     return decision_matrix, criteria_details
+
+def read_json(data):
+    decision_matrix_json = data[0]
+    criteria_details_json = data[1]
+    json_decision_matrix = np.array(decision_matrix_json['Decision Matrix'])
+    decision_matrix = create_decision_matrix(json_decision_matrix)
+    print(decision_matrix)
+    print(len(decision_matrix))
+
+def create_decision_matrix_json(json_decision_matrix):
+    """ read decision matrix from json """
+    number_of_alternatives = int(json_decision_matrix['Number of alternatives'])
+    number_of_criteria = int(json_decision_matrix['Number of criteria'])
+    alternatives_values = json_decision_matrix['Alternatives Values']
+    decision_matrix = [[0 for j in range(number_of_criteria)] for i in range(number_of_alternatives)]
+    alternatives = ["" for i in range(number_of_alternatives)]
+    for i in range(number_of_alternatives):
+        alternatives[i] = alternatives_values[i]['Alternative name']
+        for j in range(number_of_criteria):
+                decision_matrix[i][j] = float(alternatives_values[i]['criteria_values'][j])
+    return number_of_criteria, number_of_alternatives, alternatives, decision_matrix
+
+def create_criteria_details_json(method, criteria_details_json):
+    try:
+        """ read criteria details from json """
+        number_of_criteria = int(criteria_details_json['Number of criteria'])
+        weights = [0 for j in range(number_of_criteria)]
+        optimization_type = [0 for j in range(number_of_criteria)]
+        for j in range(number_of_criteria):
+            weights[j] = float(criteria_details_json['Weights'][j])
+            optimization_type[j] = int(criteria_details_json['Optimization Type'][j])
+
+        if method == "Electre I":
+            agreement_threshold = float(criteria_details_json['Agreement Threshold'])
+            veto_thresholds = [0 for j in range(number_of_criteria)]
+            for j in range(number_of_criteria):
+                veto_thresholds[j] = float(criteria_details_json['Veto Thresholds'][j])
+            return agreement_threshold, weights, veto_thresholds, optimization_type
+        elif method == "Promethee II":
+            preference_thresholds = [0 for j in range(number_of_criteria)]
+            indifference_thresholds = [0 for j in range(number_of_criteria)]
+            criteria_types = ["" for j in range(number_of_criteria)]
+            for j in range(number_of_criteria):
+                preference_thresholds[j]= float(criteria_details_json['Preference Thresholds'][j])
+                indifference_thresholds[j]= float(criteria_details_json['Indifference Thresholds'][j])
+                criteria_types[j] = criteria_details_json['Criteria Types'][j]
+            return weights, preference_thresholds, indifference_thresholds, optimization_type, criteria_types
+        else:
+            return weights, optimization_type
+    except Exception as ex:
+        raise Exception("Wrong configuration of the input")

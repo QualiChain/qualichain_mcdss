@@ -4,7 +4,7 @@ import pandas as pd
 import math
 import logging
 import sys
-from input_loaders import read_criteria_details, read_decision_matrix
+from input_loaders import read_criteria_details, read_decision_matrix, create_decision_matrix_json, create_criteria_details_json
 from helpers import normalize_weights, sort_alternatives, result_in_json, negate_columns, check_uploaded_data, delete_file
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO,
@@ -89,11 +89,15 @@ def level_criterion(indifference_threshold, preference_threshold, distance):
     else:
         return 1
 
-def main(decision_matrix, criteria_specification):
+def main(decision_matrix, criteria_specification, from_file=True):
     """ promethee II method implementation """
     # read input data
-    number_of_criteria, number_of_alternatives, alternatives, decision_matrix = read_decision_matrix(decision_matrix)
-    weights, preference_thresholds, indifference_thresholds, optimization_type, criteria_types = read_criteria_details('Promethee II', criteria_specification)
+    if from_file == True:
+        number_of_criteria, number_of_alternatives, alternatives, decision_matrix = read_decision_matrix(decision_matrix)
+        weights, preference_thresholds, indifference_thresholds, optimization_type, criteria_types = read_criteria_details('Promethee II', criteria_specification)
+    else:
+        number_of_criteria, number_of_alternatives, alternatives, decision_matrix = create_decision_matrix_json(decision_matrix)
+        weights, preference_thresholds, indifference_thresholds, optimization_type, criteria_types = create_criteria_details_json('Promethee II', criteria_specification)
     check_uploaded_data(number_of_criteria, optimization_type, [], preference_thresholds, indifference_thresholds, criteria_types)
     # negate columns of decision matrix in case optimization type is 1 (minimize)
     decision_matrix = negate_columns(decision_matrix, optimization_type)
