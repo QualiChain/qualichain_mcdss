@@ -4,8 +4,8 @@ import pandas as pd
 import logging
 import math
 import sys
-from csv_loaders import read_criteria_details, read_decision_matrix
-from helpers import normalize_weights, sort_alternatives, result_in_json, negate_columns, check_uploaded_files, delete_file
+from input_loaders import read_criteria_details, read_decision_matrix
+from helpers import normalize_weights, sort_alternatives, result_in_json, negate_columns, check_uploaded_data, delete_file
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -53,15 +53,12 @@ def calculate_closeness(distance_ideal, distance_negative_ideal):
         closeness[i] = round(distance_negative_ideal[i]*1.0 / (distance_ideal[i] + distance_negative_ideal[i]), 4)
     return closeness
 
-def main(decision_matrix_file_path, criteria_specification_file_path):
+def main(decision_matrix, criteria_specification):
     """ topsis method implementation """
-    # read file
-    number_of_criteria, number_of_alternatives, alternatives, decision_matrix = read_decision_matrix(decision_matrix_file_path)
-    weights, optimization_type = read_criteria_details('Topsis', criteria_specification_file_path)
-    check_uploaded_files(number_of_criteria, optimization_type)
-    # delete uploaded csv files
-    delete_file(decision_matrix_file_path)
-    delete_file(criteria_specification_file_path)
+    # read input data
+    number_of_criteria, number_of_alternatives, alternatives, decision_matrix = read_decision_matrix(decision_matrix)
+    weights, optimization_type = read_criteria_details('Topsis', criteria_specification)
+    check_uploaded_data(number_of_criteria, optimization_type)
     # negate columns of decision matrix in case optimization type is 1 (minimize)
     decision_matrix = negate_columns(decision_matrix, optimization_type)
     # normalize weights

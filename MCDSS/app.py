@@ -6,7 +6,7 @@ from flask_cors import CORS
 from methods import maut, prometheeII, topsis, electreI
 from settings import ALLOWED_EXTENSIONS, UPLOAD_FOLDER, API_PORT
 from helpers import allowed_file, save_file, result_in_json
-from csv_loaders import upload_csv_files
+from input_loaders import upload_csv_files
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -21,10 +21,10 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def mcdss_maut():
     """ maut method """
     try:
-        # get uploaded files
-        decision_matrix_file_path, criteria_details_file_path = upload_csv_files(request.files, app.config['UPLOAD_FOLDER'])
+        # get content of uploaded files
+        decision_matrix, criteria_details = upload_csv_files(request.files, app.config['UPLOAD_FOLDER'])
         # call maut method
-        sorted_utility_scores, sorted_alternatives = maut.main(decision_matrix_file_path, criteria_details_file_path)
+        sorted_utility_scores, sorted_alternatives = maut.main(decision_matrix, criteria_details)
         # create result as json object, each json object consists of the alternative name, score and ranking
         result = result_in_json(sorted_alternatives, sorted_utility_scores)
         return result, 200
@@ -36,10 +36,10 @@ def mcdss_maut():
 def mcdss_topsis():
     """ topsis method """
     try:
-        # get uploaded files
-        decision_matrix_file_path, criteria_details_file_path = upload_csv_files(request.files, app.config['UPLOAD_FOLDER'])
+        # get content of uploaded files
+        decision_matrix, criteria_details = upload_csv_files(request.files, app.config['UPLOAD_FOLDER'])
         # call topsis method
-        sorted_closeness, sorted_alternatives = topsis.main(decision_matrix_file_path, criteria_details_file_path)
+        sorted_closeness, sorted_alternatives = topsis.main(decision_matrix, criteria_details)
         # create result as json object, each json object consists of the alternative name, score and ranking
         result = result_in_json(sorted_alternatives, sorted_closeness)
         return result, 200
@@ -51,10 +51,10 @@ def mcdss_topsis():
 def mcdss_prometheeII():
     """ promethee II method """
     try:
-        # get uploaded files
-        decision_matrix_file_path, criteria_details_file_path = upload_csv_files(request.files, app.config['UPLOAD_FOLDER'])
+        # get content of uploaded files
+        decision_matrix, criteria_details = upload_csv_files(request.files, app.config['UPLOAD_FOLDER'])
         # call topsis method
-        sorted_net_flows, sorted_net_alternatives = prometheeII.main(decision_matrix_file_path, criteria_details_file_path)
+        sorted_net_flows, sorted_net_alternatives = prometheeII.main(decision_matrix, criteria_details)
         # create result as json object, each json object consists of the alternative name, score and ranking
         result = result_in_json(sorted_net_alternatives, sorted_net_flows)
         return result, 200
@@ -66,10 +66,10 @@ def mcdss_prometheeII():
 def mcdss_electreI():
     """ electre I method """
     try:
-        # get uploaded files
-        decision_matrix_file_path, criteria_details_file_path = upload_csv_files(request.files, app.config['UPLOAD_FOLDER'])
+        # get content of uploaded files
+        decision_matrix, criteria_details = upload_csv_files(request.files, app.config['UPLOAD_FOLDER'])
         # call topsis method
-        dominance_matrix, alternatives = electreI.main(decision_matrix_file_path, criteria_details_file_path)
+        dominance_matrix, alternatives = electreI.main(decision_matrix, criteria_details)
         # create result as json object, result consists of the dominance table and the alternatives
         result = []
         result.append({"Dominance Table": dominance_matrix.tolist(), "Alternatives": alternatives})
@@ -83,24 +83,28 @@ def mcdss():
     try:
         # get method
         method = request.form['method']
-        # get uploaded files
-        decision_matrix_file_path, criteria_details_file_path = upload_csv_files(request.files, app.config['UPLOAD_FOLDER'])
+        # get content of uploaded files
+        decision_matrix, criteria_details = upload_csv_files(request.files, app.config['UPLOAD_FOLDER'])
         # call respective method
         if method is not None:
             if method == "Maut":
-                sorted_utility_scores, sorted_alternatives = maut.main(decision_matrix_file_path, criteria_details_file_path)
+                sorted_utility_scores, sorted_alternatives = maut.main(decision_matrix, criteria_details)
+                # create result as json object, each json object consists of the alternative name, score and ranking
                 result = result_in_json(sorted_alternatives, sorted_utility_scores)
                 return result, 200
             elif method == "Topsis":
-                sorted_closeness, sorted_alternatives = topsis.main(decision_matrix_file_path, criteria_details_file_path)
+                sorted_closeness, sorted_alternatives = topsis.main(decision_matrix, criteria_details)
+                # create result as json object, each json object consists of the alternative name, score and ranking
                 result = result_in_json(sorted_alternatives, sorted_closeness)
                 return result, 200
             elif method == "Promethee II":
-                sorted_net_flows, sorted_net_alternatives = prometheeII.main(decision_matrix_file_path, criteria_details_file_path)
+                sorted_net_flows, sorted_net_alternatives = prometheeII.main(decision_matrix, criteria_details)
+                # create result as json object, each json object consists of the alternative name, score and ranking
                 result = result_in_json(sorted_net_alternatives, sorted_net_flows)
                 return result, 200
             elif method == "Electre I":
-                dominance_matrix, alternatives = electreI.main(decision_matrix_file_path, criteria_details_file_path)
+                dominance_matrix, alternatives = electreI.main(decision_matrix, criteria_details)
+                # create result as json object, result consists of the dominance table and the alternatives
                 result = []
                 result.append({"Dominance Table": dominance_matrix.tolist(), "Alternatives": alternatives})
                 return jsonify(result), 200

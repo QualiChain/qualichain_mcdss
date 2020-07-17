@@ -5,8 +5,8 @@ import math
 import logging
 import sys
 from flask import Flask, jsonify
-from csv_loaders import read_criteria_details, read_decision_matrix
-from helpers import normalize_weights, sort_alternatives, result_in_json, negate_columns, check_uploaded_files, delete_file
+from input_loaders import read_criteria_details, read_decision_matrix
+from helpers import normalize_weights, sort_alternatives, result_in_json, negate_columns, check_uploaded_data, delete_file
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -47,15 +47,12 @@ def calculate_dominance_table(agreement_matrix, disagreement_matrix, agreement_t
                 dominance_matrix[i][j] = 1
     return dominance_matrix
 
-def main(decision_matrix_file_path, criteria_specification_file_path):
+def main(decision_matrix, criteria_specification):
     """ electre method implementation """
-    # read file
-    number_of_criteria, number_of_alternatives, alternatives, decision_matrix = read_decision_matrix(decision_matrix_file_path)
-    agreement_threshold, weights, veto_thresholds, optimization_type = read_criteria_details('Electre I', criteria_specification_file_path)
-    check_uploaded_files(number_of_criteria, optimization_type, veto_thresholds)
-    # delete uploaded csv files
-    delete_file(decision_matrix_file_path)
-    delete_file(criteria_specification_file_path)
+    # read input data
+    number_of_criteria, number_of_alternatives, alternatives, decision_matrix = read_decision_matrix(decision_matrix)
+    agreement_threshold, weights, veto_thresholds, optimization_type = read_criteria_details('Electre I', criteria_specification)
+    check_uploaded_data(number_of_criteria, optimization_type, veto_thresholds)
     # negate columns of decision matrix in case optimization type is 1 (minimize)
     decision_matrix = negate_columns(decision_matrix, optimization_type)
     # normalize weights

@@ -47,7 +47,7 @@ def save_file(file, path):
     else:
         return ""
 
-def check_uploaded_files(number_of_criteria, optimization_type, veto_thresholds=[], preference_thresholds=[], indifference_thresholds=[], criteria_types=[]):
+def check_uploaded_data(number_of_criteria, optimization_type, veto_thresholds=[], preference_thresholds=[], indifference_thresholds=[], criteria_types=[]):
     for j in range(len(optimization_type)):
         if optimization_type[j] != 0 and optimization_type[j] != 1:
             raise Exception("Optimization types can only take values of 0 or 1")

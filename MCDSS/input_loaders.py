@@ -2,13 +2,10 @@ import io
 import sys
 import csv
 import numpy as np
-from helpers import allowed_file, save_file
+from helpers import allowed_file, save_file, delete_file
 
-def read_decision_matrix(file_path):
+def read_decision_matrix(data):
     """ read decision matrix """
-    with open(file_path, 'r', encoding='utf-8-sig') as csvfile:
-        data = list(csv.reader(csvfile, delimiter=';'))
-    data = np.array(data)
     number_of_alternatives_index = np.argwhere(data == 'Number of alternatives')
     number_of_criteria_index = np.argwhere(data == 'Number of criteria')
     decision_matrix_index = np.argwhere(data == 'Alternatives / Criteria')
@@ -25,12 +22,9 @@ def read_decision_matrix(file_path):
     return number_of_criteria, number_of_alternatives, alternatives, decision_matrix
 
 
-def read_criteria_details(method, file_path):
+def read_criteria_details(method, data):
     try:
         """ read criteria details """
-        with open(file_path, 'r', encoding='utf-8-sig') as csvfile:
-            data = list(csv.reader(csvfile, delimiter=';'))
-        data = np.array(data)
         number_of_criteria_index = np.argwhere(data == 'Number of criteria')
         weights_index = np.argwhere(data == 'Weights')
         optimization_types_index = np.argwhere(data == 'Optimization Type')
@@ -67,7 +61,7 @@ def read_criteria_details(method, file_path):
         raise Exception("Wrong configuration of the uploaded files")
 
 def upload_csv_files(files, upload_folder):
-    """ get uploaded files """
+    """ get content of the uploaded files """
     if 'Decision Matrix' not in files or ('Criteria Details' not in files):
         raise Exception("Both the Decision Matrix file and the Criteria Details file are required")
     decision_matrix_file = files['Decision Matrix']
@@ -83,4 +77,13 @@ def upload_csv_files(files, upload_folder):
     criteria_details_file_path = save_file(criteria_details_file, upload_folder)
     if criteria_details_file_path == '':
         raise Exception("Allowed file type is csv")
-    return decision_matrix_file_path, criteria_details_file_path
+    with open(decision_matrix_file_path, 'r', encoding='utf-8-sig') as csvfile:
+        decision_matrix = list(csv.reader(csvfile, delimiter=';'))
+    decision_matrix = np.array(decision_matrix)
+    with open(criteria_details_file_path, 'r', encoding='utf-8-sig') as csvfile:
+        criteria_details = list(csv.reader(csvfile, delimiter=';'))
+    criteria_details = np.array(criteria_details)
+    # delete uploaded csv files
+    delete_file(decision_matrix_file_path)
+    delete_file(criteria_details_file_path)
+    return decision_matrix, criteria_details
