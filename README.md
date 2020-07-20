@@ -22,18 +22,39 @@ To install MCDSS using docker run the following command:
 
 ### Access points:
 
-1. Maut: `http://127.0.0.1:7070/file/mcdss/maut`
-2. Topsis: `http://127.0.0.1:7070/file/mcdss/topsis`
-3. Electre I: `http://127.0.0.1:7070/file/mcdss/electreI`
-4. Promethee II: `http://127.0.0.1:7070/file/mcdss/prometheeII`
-5. General access point for all methods: `http://127.0.0.1:7070/file/mcdss`
+1. Maut (input: json): `http://127.0.0.1:7070/mcdss/maut`
+2. Topsis (input: json): `http://127.0.0.1:7070/mcdss/topsis`
+3. Electre I (input: json): `http://127.0.0.1:7070/mcdss/electreI`
+4. Promethee II (input: json): `http://127.0.0.1:7070/mcdss/prometheeII`
+5. Maut (input: csv files): `http://127.0.0.1:7070/file/mcdss/maut`
+6. Topsis (input: csv files): `http://127.0.0.1:7070/file/mcdss/topsis`
+7. Electre I (input: csv files): `http://127.0.0.1:7070/file/mcdss/electreI`
+8. Promethee II (input: csv files): `http://127.0.0.1:7070/file/mcdss/prometheeII`
+9. General access point for all methods (input: csv files): `http://127.0.0.1:7070/file/mcdss`
 
 ### Input
 
-The MCDSS API receives POST requests that contain the following:
-1.	a UTF-8 encoded csv file that contains the Decision Matrix (a point (.) should be used as decimal separator, while semicolon (;) is the csv separator)
-2.	a UTF-8 encoded csv file that contains the Criteria Details (a point (.) should be used as decimal separator, while semicolon (;) is the csv separator)
-3.  the preferred method which can only take the following values: Maut, Topsis, Promethee II, and Electre I **(only in case the access point `http://127.0.0.1:7070/mcdss` is used)**
+The MCDSS API receives POST requests that contain **one** of the following:
+
+1. a json object that contains information about the Decision Matrix and the Criteria Details (a point (.) should be used as decimal separator)
+2.	- a UTF-8 encoded csv file that contains the Decision Matrix (a point (.) should be used as decimal separator, while semicolon (;) is the csv separator)
+    - a UTF-8 encoded csv file that contains the Criteria Details (a point (.) should be used as decimal separator, while semicolon (;) is the csv separator)
+    - the preferred method which can only take the following values: Maut, Topsis, Promethee II, and Electre I **(only in case the access point `http://127.0.0.1:7070/mcdss` is used)**
+
+#### JSON Object
+
+The JSON object includes information about the decision matrix and the criteria details.
+
+Optimization types can only take values of 0 or 1, with 0 denoting that the criterion is profit maximization and 1 denoting that it is cost minimization.  
+The criteria types, used in Promethee II, can only take the following values: usual, quasi, linear, linear with indifference threshold, and level.  
+All thresholds can only take nonnegative value.
+
+Each method requires a specific set of **criteria details** to be configured.
+*	In case the preferred method is either “Maut” or “Topsis”, users should insert information about the number of criteria, the weights, and the optimization types.
+*	In case the preferred method is “Electre I”, users should insert information about the number of criteria, the weights, the optimization types, the agreement threshold, and the veto thresholds.
+*	In case the preferred method is “Promethee II”, users should insert information about the number of criteria, the weights, the optimization types, the preference thresholds, the indifference thresholds, and the criteria types.
+
+Examples of JSON objects can be found in folder [/Input_Templates/json_examples](https://gitlab.epu.ntua.gr/qualichain/qualichain-mcdss/-/tree/master/Input_Templates/json_examples).
 
 #### Decision Matrix CSV
 
@@ -51,7 +72,7 @@ The text that appears in bold should not be changed.
 |Alternative 5||||||
 |...||||||
 
-Examples of Decision Matrix csv files can be found in folder [/Input_Templates](https://gitlab.epu.ntua.gr/qualichain/qualichain-mcdss/-/tree/master/Input_Templates).
+Examples of Decision Matrix csv files can be found in folder [/Input_Templates/csv_examples](https://gitlab.epu.ntua.gr/qualichain/qualichain-mcdss/-/tree/master/Input_Templates/csv_examples).
 
 #### Criteria Details CSV
 
@@ -78,20 +99,59 @@ Each method requires a specific set of cells to be filled.
 *	In case the preferred method is “Electre I”, users should insert information about the number of criteria, the weights, the optimization types, the agreement threshold, and the veto thresholds.
 *	In case the preferred method is “Promethee II”, users should insert information about the number of criteria, the weights, the optimization types, the preference thresholds, the indifference thresholds, and the criteria types.
 
-Examples of Criteria Details csv files can be found in folder [/Input_Templates](https://gitlab.epu.ntua.gr/qualichain/qualichain-mcdss/-/tree/master/Input_Templates).
+Examples of Criteria Details csv files can be found in folder [/Input_Templates/csv_examples](https://gitlab.epu.ntua.gr/qualichain/qualichain-mcdss/-/tree/master/Input_Templates/csv_examples).
 
 ### Request Examples
 
-This is an example API call that demonstrates the two different ways to invoke the Maut method.
+This is an example API call that demonstrates the three different ways to invoke the Maut method.
 
 ```curl
 curl --location --request POST 'http://127.0.0.1:7070/mcdss/maut' \
+--header 'Content-Type: application/json' \
+--data-raw '[
+  {
+    "Decision Matrix": [
+      {
+        "Number of alternatives": 3,
+        "Number of criteria": 5,
+        "Criteria": ["Criterion 1", "Criterion 2", "Criterion 3", "Criterion 4", "Criterion 5"],
+        "Alternatives Values": [
+            {
+                "Alternative name": "Alternative 1",
+                 "criteria_values": [85, 75, 75, 65, 75]
+            },
+            {
+                "Alternative name": "Alternative 2",
+                 "criteria_values": [80, 65, 75, 62.5, 75]
+            },
+            {
+                "Alternative name": "Alternative 3",
+                 "criteria_values": [50, 17.5, 70, 6.12, 60]
+            }
+        ]
+      }
+    ]
+  },
+  {
+    "Criteria Details": [
+      {
+        "Number of criteria": 5,
+        "Weights": [70, 75, 42.5, 77.5, 75],
+        "Optimization Type": [0, 0, 0, 0, 0]
+      }
+    ]
+  }
+]'
+```
+
+```curl
+curl --location --request POST 'http://127.0.0.1:7070/file/mcdss/maut' \
 --form 'Decision Matrix=@/qualichain-mcdss/Input_Templates/Decision_Matrix_Maut.csv' \
 --form 'Criteria Details=@/qualichain-mcdss/Input_Templates/Criteria_Specification_Maut.csv'
 ```
 
 ```curl
-curl --location --request POST 'http://127.0.0.1:5000/mcdss' \
+curl --location --request POST 'http://127.0.0.1:5000/file/mcdss' \
 --form 'Decision Matrix=@/qualichain-mcdss/Input_Templates/Decision_Matrix_Maut.csv' \
 --form 'Criteria Details=@/qualichain-mcdss/Input_Templates/Criteria_Specification_Maut.csv' \
 --form 'method=Maut'
