@@ -24,8 +24,8 @@ def mcdss_maut():
     try:
         # get input
         data = request.get_json()
-        decision_matrix_json = data[0]['Decision Matrix'][0]
-        criteria_details_json = data[1]['Criteria Details'][0]
+        decision_matrix_json = data['Decision_Matrix']
+        criteria_details_json = data['Criteria_Details']
         # call maut method
         sorted_utility_scores, sorted_alternatives = maut.main(decision_matrix_json, criteria_details_json, False)
         # create result as json object, each json object consists of the alternative name, score and ranking
@@ -42,8 +42,8 @@ def mcdss_topsis():
     try:
         # get input
         data = request.get_json()
-        decision_matrix_json = data[0]['Decision Matrix'][0]
-        criteria_details_json = data[1]['Criteria Details'][0]
+        decision_matrix_json = data['Decision_Matrix']
+        criteria_details_json = data['Criteria_Details']
         # call topsis method
         sorted_closeness, sorted_alternatives = topsis.main(decision_matrix_json, criteria_details_json, False)
         # create result as json object, each json object consists of the alternative name, score and ranking
@@ -59,8 +59,8 @@ def mcdss_prometheeII():
     try:
         # get input
         data = request.get_json()
-        decision_matrix_json = data[0]['Decision Matrix'][0]
-        criteria_details_json = data[1]['Criteria Details'][0]
+        decision_matrix_json = data['Decision_Matrix']
+        criteria_details_json = data['Criteria_Details']
         # call prometheeII method
         sorted_net_flows, sorted_net_alternatives = prometheeII.main(decision_matrix_json, criteria_details_json, False)
         # create result as json object, each json object consists of the alternative name, score and ranking
@@ -76,8 +76,8 @@ def mcdss_electreI():
     try:
         # get input
         data = request.get_json()
-        decision_matrix_json = data[0]['Decision Matrix'][0]
-        criteria_details_json = data[1]['Criteria Details'][0]
+        decision_matrix_json = data['Decision_Matrix']
+        criteria_details_json = data['Criteria_Details']
         # call electreI method
         dominance_matrix, alternatives = electreI.main(decision_matrix_json, criteria_details_json, False)
         # create result as json object, result consists of the dominance table and the alternatives
@@ -88,7 +88,7 @@ def mcdss_electreI():
         log.error(ex)
         return str(ex).encode('utf-8'), 400
 
-@app.route("/file/mcdss/maut", methods=['POST'])
+@app.route("/mcdss/maut/file", methods=['POST'])
 def file_mcdss_maut():
     """ maut method """
     try:
@@ -103,7 +103,7 @@ def file_mcdss_maut():
         log.error(ex)
         return str(ex).encode('utf-8'), 400
 
-@app.route("/file/mcdss/topsis", methods=['POST'])
+@app.route("/mcdss/topsis/file", methods=['POST'])
 def file_mcdss_topsis():
     """ topsis method """
     try:
@@ -118,7 +118,7 @@ def file_mcdss_topsis():
         log.error(ex)
         return str(ex).encode('utf-8'), 400
 
-@app.route("/file/mcdss/prometheeII", methods=['POST'])
+@app.route("/mcdss/prometheeII/file", methods=['POST'])
 def file_mcdss_prometheeII():
     """ promethee II method """
     try:
@@ -133,7 +133,7 @@ def file_mcdss_prometheeII():
         log.error(ex)
         return str(ex).encode('utf-8'), 400
 
-@app.route("/file/mcdss/electreI", methods=['POST'])
+@app.route("/mcdss/electreI/file", methods=['POST'])
 def file_mcdss_electreI():
     """ electre I method """
     try:
@@ -149,7 +149,7 @@ def file_mcdss_electreI():
         log.error(ex)
         return str(ex).encode('utf-8'), 400
 
-@app.route("/file/mcdss", methods=['POST'])
+@app.route("/mcdss/file", methods=['POST'])
 def mcdss():
     try:
         # get method

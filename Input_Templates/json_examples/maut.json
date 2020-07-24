@@ -1,54 +1,49 @@
-[
-  {
-    "Decision Matrix": [
-      {
-        "Number of alternatives": 8,
-        "Number of criteria": 7,
-        "Criteria": ["Criterion 1", "Criterion 2", "Criterion 3", "Criterion 4", "Criterion 5", "Criterion 6", "Criterion 7"],
-        "Alternatives Values": [
-            {
-                "Alternative name": "Alternative 1",
-                 "criteria_values": [85, 75, 75, 65, 75, 75, 70]
-            },
-            {
-                "Alternative name": "Alternative 2",
-                 "criteria_values": [80, 65, 75, 62.5, 75, 25, 70]
-            },
-            {
-                "Alternative name": "Alternative 3",
-                 "criteria_values": [50, 17.5, 70, 6.12, 60, 25, 35]
-            },
-            {
-                "Alternative name": "Alternative 4",
-                 "criteria_values": [85, 17.5, 75, 35, 50, 92.5, 35]
-            },
-            {
-                "Alternative name": "Alternative 5",
-                 "criteria_values": [80, 50, 30, 65, 70, 25, 70]
-            },
-            {
-                "Alternative name": "Alternative 6",
-                 "criteria_values": [50, 75, 70, 35, 50, 60, 35]
-            },
-            {
-                "Alternative name": "Alternative 7",
-                 "criteria_values": [50, 75, 60, 65, 60, 92.5, 70]
-            },
-            {
-                "Alternative name": "Alternative 8",
-                 "criteria_values": [85, 10, 75, 60, 60, 32.5, 70]
-            }
-        ]
-      }
-    ]
-  },
-  {
-    "Criteria Details": [
-      {
-        "Number of criteria": 7,
-        "Weights": [70, 75, 42.5, 77.5, 75, 45, 65],
-        "Optimization Type": [0, 0, 0, 0, 0, 0, 0]
-      }
-    ]
-  }
-]
+
+{
+  "Decision_Matrix":
+    {
+      "Number_of_alternatives": 8,
+      "Number_of_criteria": 7,
+      "Criteria": ["Criterion 1", "Criterion 2", "Criterion 3", "Criterion 4", "Criterion 5", "Criterion 6", "Criterion 7"],
+      "Alternatives": [
+          {
+              "Name": "Alternative 1",
+               "Values": [85, 75, 75, 65, 75, 75, 70]
+          },
+          {
+              "Name": "Alternative 2",
+               "Values": [80, 65, 75, 62.5, 75, 25, 70]
+          },
+          {
+              "Name": "Alternative 3",
+               "Values": [50, 17.5, 70, 6.12, 60, 25, 35]
+          },
+          {
+              "Name": "Alternative 4",
+               "Values": [85, 17.5, 75, 35, 50, 92.5, 35]
+          },
+          {
+              "Name": "Alternative 5",
+               "Values": [80, 50, 30, 65, 70, 25, 70]
+          },
+          {
+              "Name": "Alternative 6",
+               "Values": [50, 75, 70, 35, 50, 60, 35]
+          },
+          {
+              "Name": "Alternative 7",
+               "Values": [50, 75, 60, 65, 60, 92.5, 70]
+          },
+          {
+              "Name": "Alternative 8",
+               "Values": [85, 10, 75, 60, 60, 32.5, 70]
+          }
+      ]
+    },
+  "Criteria_Details":
+    {
+      "Number_of_criteria": 7,
+      "Weights": [70, 75, 42.5, 77.5, 75, 45, 65],
+      "Optimization_Type": [0, 0, 0, 0, 0, 0, 0]
+    }
+}

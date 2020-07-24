@@ -26,11 +26,11 @@ To install MCDSS using docker run the following command:
 2. Topsis (input: json): `http://127.0.0.1:7070/mcdss/topsis`
 3. Electre I (input: json): `http://127.0.0.1:7070/mcdss/electreI`
 4. Promethee II (input: json): `http://127.0.0.1:7070/mcdss/prometheeII`
-5. Maut (input: csv files): `http://127.0.0.1:7070/file/mcdss/maut`
-6. Topsis (input: csv files): `http://127.0.0.1:7070/file/mcdss/topsis`
-7. Electre I (input: csv files): `http://127.0.0.1:7070/file/mcdss/electreI`
-8. Promethee II (input: csv files): `http://127.0.0.1:7070/file/mcdss/prometheeII`
-9. General access point for all methods (input: csv files): `http://127.0.0.1:7070/file/mcdss`
+5. Maut (input: csv files): `http://127.0.0.1:7070/mcdss/maut/file`
+6. Topsis (input: csv files): `http://127.0.0.1:7070/mcdss/topsis/file`
+7. Electre I (input: csv files): `http://127.0.0.1:7070/mcdss/electreI/file`
+8. Promethee II (input: csv files): `http://127.0.0.1:7070/mcdss/prometheeII/file`
+9. General access point for all methods (input: csv files): `http://127.0.0.1:7070/mcdss/file`
 
 ### Input
 
@@ -108,50 +108,46 @@ This is an example API call that demonstrates the three different ways to invoke
 ```curl
 curl --location --request POST 'http://127.0.0.1:7070/mcdss/maut' \
 --header 'Content-Type: application/json' \
---data-raw '[
-  {
-    "Decision Matrix": [
-      {
-        "Number of alternatives": 3,
-        "Number of criteria": 5,
+--data-raw '
+{
+  "Decision_Matrix":
+    {
+      "Number_of_alternatives": 3,
+        "Number_of_criteria": 5,
         "Criteria": ["Criterion 1", "Criterion 2", "Criterion 3", "Criterion 4", "Criterion 5"],
-        "Alternatives Values": [
+        "Alternatives": [
             {
-                "Alternative name": "Alternative 1",
-                 "criteria_values": [85, 75, 75, 65, 75]
+                "Name": "Alternative 1",
+                 "Values": [85, 75, 75, 65, 75]
             },
             {
-                "Alternative name": "Alternative 2",
-                 "criteria_values": [80, 65, 75, 62.5, 75]
+                "Name": "Alternative 2",
+                 "Values": [80, 65, 75, 62.5, 75]
             },
             {
-                "Alternative name": "Alternative 3",
-                 "criteria_values": [50, 17.5, 70, 6.12, 60]
+                "Name": "Alternative 3",
+                 "Values": [50, 17.5, 70, 6.12, 60]
             }
         ]
-      }
-    ]
-  },
-  {
-    "Criteria Details": [
-      {
-        "Number of criteria": 5,
+    },
+  "Criteria_Details":
+    {
+      "Number_of_criteria": 5,
         "Weights": [70, 75, 42.5, 77.5, 75],
-        "Optimization Type": [0, 0, 0, 0, 0]
-      }
-    ]
-  }
-]'
+        "Optimization_Type": [0, 0, 0, 0, 0]
+    }
+}
+'
 ```
 
 ```curl
-curl --location --request POST 'http://127.0.0.1:7070/file/mcdss/maut' \
+curl --location --request POST 'http://127.0.0.1:7070/mcdss/maut/file' \
 --form 'Decision Matrix=@/qualichain-mcdss/Input_Templates/Decision_Matrix_Maut.csv' \
 --form 'Criteria Details=@/qualichain-mcdss/Input_Templates/Criteria_Specification_Maut.csv'
 ```
 
 ```curl
-curl --location --request POST 'http://127.0.0.1:5000/file/mcdss' \
+curl --location --request POST 'http://127.0.0.1:5000/mcdss/file' \
 --form 'Decision Matrix=@/qualichain-mcdss/Input_Templates/Decision_Matrix_Maut.csv' \
 --form 'Criteria Details=@/qualichain-mcdss/Input_Templates/Criteria_Specification_Maut.csv' \
 --form 'method=Maut'
