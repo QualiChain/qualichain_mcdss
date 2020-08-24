@@ -9,7 +9,8 @@ You can access the MCDSS from port `7070`.
 
 To install MCDSS using docker run the following command:
 
-1. Build project: `docker-compose up -d --build`
+1. Install MCDSS using QualiChain Network Dependencies: `docker-compose up -d --build`
+2. Standalone Installation: `docker-compose -f docker-compose.dev.yml up -d --build`
 
 ## Local Installation
 

@@ -9,10 +9,3 @@ services:
       context: "."
     ports:
       - 7070:7070
-    networks:
-      - config_qmediator
-
-
-networks:
-  config_qmediator:
-    external: true
