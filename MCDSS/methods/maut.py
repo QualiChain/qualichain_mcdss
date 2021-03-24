@@ -42,7 +42,8 @@ def main(decision_matrix, criteria_specification, from_file=True):
     utility_scores = [0 for i in range(number_of_alternatives)]
     for i in range(number_of_alternatives):
         for j in range(number_of_criteria):
-            utility_scores[i] += normalized_decision_matrix[i][j]
+            if normalized_decision_matrix[i][j] == normalized_decision_matrix[i][j]:
+                utility_scores[i] += normalized_decision_matrix[i][j]
         utility_scores[i] = round(utility_scores[i], 4)
     # sort alternatives by score
     sorted_utility_scores, sorted_alternatives = sort_alternatives(utility_scores, alternatives, True)
