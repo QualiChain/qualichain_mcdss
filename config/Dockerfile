@@ -1,4 +1,3 @@
-#use python 3.7 image
 FROM python:3.7-slim
 
 RUN apt-get update && apt-get install -y netcat && apt-get install dos2unix
@@ -13,9 +12,9 @@ RUN mkdir -p ./MCDSS/uploads
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
-#copy contents to container automatic-forensic-tool
-ADD . .
+#copy contents to container
+COPY . .
 
 #start app
-RUN dos2unix run.sh
-CMD bash run.sh
+RUN dos2unix config/run.sh
+CMD bash config/run.sh

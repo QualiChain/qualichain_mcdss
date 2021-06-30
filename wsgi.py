@@ -1,7 +1,7 @@
 import logging
 import sys
 from api.app import app
-from MCDSS.settings import  API_PORT
+from settings import  API_PORT
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")

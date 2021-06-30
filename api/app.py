@@ -3,18 +3,20 @@ import logging
 
 from flask import Flask, request, jsonify
 from MCDSS import electreI, topsis, prometheeII, maut
-from MCDSS.helpers import result_in_json
-from MCDSS.input_loaders import upload_csv_files
+
 from flask_cors import CORS
-from MCDSS.settings import UPLOAD_FOLDER
+
+from api.utils import result_in_json, upload_csv_files
+from settings import UPLOAD_FOLDER
+
 logging.basicConfig(stream=sys.stdout, level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 log = logging.getLogger(__name__)
 
-
 app = Flask(__name__)
 CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 @app.route("/mcdss/maut", methods=['POST'])
 def mcdss_maut():
@@ -29,10 +31,10 @@ def mcdss_maut():
         # create result as json object, each json object consists of the alternative name, score and ranking
         result = result_in_json(sorted_alternatives, sorted_utility_scores)
         return result, 200
-        return "OK"
     except Exception as ex:
         log.error(ex)
         return str(ex).encode('utf-8'), 400
+
 
 @app.route("/mcdss/topsis", methods=['POST'])
 def mcdss_topsis():
@@ -51,6 +53,7 @@ def mcdss_topsis():
         log.error(ex)
         return str(ex).encode('utf-8'), 400
 
+
 @app.route("/mcdss/prometheeII", methods=['POST'])
 def mcdss_prometheeII():
     """ promethee II method """
@@ -67,6 +70,7 @@ def mcdss_prometheeII():
     except Exception as ex:
         log.error(ex)
         return str(ex).encode('utf-8'), 400
+
 
 @app.route("/mcdss/electreI", methods=['POST'])
 def mcdss_electreI():
@@ -86,6 +90,7 @@ def mcdss_electreI():
         log.error(ex)
         return str(ex).encode('utf-8'), 400
 
+
 @app.route("/mcdss/maut/file", methods=['POST'])
 def file_mcdss_maut():
     """ maut method """
@@ -100,6 +105,7 @@ def file_mcdss_maut():
     except Exception as ex:
         log.error(ex)
         return str(ex).encode('utf-8'), 400
+
 
 @app.route("/mcdss/topsis/file", methods=['POST'])
 def file_mcdss_topsis():
@@ -116,6 +122,7 @@ def file_mcdss_topsis():
         log.error(ex)
         return str(ex).encode('utf-8'), 400
 
+
 @app.route("/mcdss/prometheeII/file", methods=['POST'])
 def file_mcdss_prometheeII():
     """ promethee II method """
@@ -130,6 +137,7 @@ def file_mcdss_prometheeII():
     except Exception as ex:
         log.error(ex)
         return str(ex).encode('utf-8'), 400
+
 
 @app.route("/mcdss/electreI/file", methods=['POST'])
 def file_mcdss_electreI():
@@ -146,6 +154,7 @@ def file_mcdss_electreI():
     except Exception as ex:
         log.error(ex)
         return str(ex).encode('utf-8'), 400
+
 
 @app.route("/mcdss/file", methods=['POST'])
 def mcdss():

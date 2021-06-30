@@ -3,8 +3,9 @@ import logging
 import math
 import sys
 
-from input_loaders import read_criteria_details, read_decision_matrix, create_decision_matrix_json, create_criteria_details_json
-from helpers import normalize_weights, sort_alternatives, result_in_json, negate_columns, check_uploaded_data, delete_file
+from MCDSS.helpers import check_uploaded_data, negate_columns, normalize_weights, sort_alternatives
+from MCDSS.input_loaders import read_criteria_details, read_decision_matrix, create_decision_matrix_json, \
+    create_criteria_details_json
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")

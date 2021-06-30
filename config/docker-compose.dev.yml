@@ -6,13 +6,7 @@ services:
     container_name: qualichain_mcdss
     restart: always
     build:
-      context: "."
+      context: ".."
+      dockerfile: config/Dockerfile
     ports:
       - 7070:7070
-    networks:
-      - config_qmediator
-
-
-networks:
-  config_qmediator:
-    external: true

@@ -1,8 +1,10 @@
 import numpy as np
 import logging
 import sys
-from MCDSS.input_loaders import read_criteria_details, read_decision_matrix, create_decision_matrix_json, create_criteria_details_json
-from MCDSS.helpers import normalize_weights, negate_columns, check_uploaded_data
+
+from MCDSS.helpers import check_uploaded_data, negate_columns, normalize_weights
+from MCDSS.input_loaders import read_decision_matrix, read_criteria_details, create_decision_matrix_json, \
+    create_criteria_details_json
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")

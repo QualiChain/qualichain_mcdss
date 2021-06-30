@@ -1,8 +1,5 @@
-import io
-import sys
-import csv
 import numpy as np
-# from helpers import allowed_file, save_file, delete_file
+
 
 def read_decision_matrix(data):
     """ read decision matrix """
@@ -16,9 +13,9 @@ def read_decision_matrix(data):
     decision_matrix = [[0 for j in range(number_of_criteria)] for i in range(number_of_alternatives)]
     alternatives = ["" for i in range(number_of_alternatives)]
     for i in range(number_of_alternatives):
-        alternatives[i] = data[i+decision_matrix_index[0][0]][0]
+        alternatives[i] = data[i + decision_matrix_index[0][0]][0]
         for j in range(number_of_criteria):
-                decision_matrix[i][j] = float(data[i + decision_matrix_index[0][0]][j + decision_matrix_index[0][1] ])
+            decision_matrix[i][j] = float(data[i + decision_matrix_index[0][0]][j + decision_matrix_index[0][1]])
     return number_of_criteria, number_of_alternatives, alternatives, decision_matrix
 
 
@@ -33,7 +30,7 @@ def read_criteria_details(method, data):
         optimization_type = [0 for j in range(number_of_criteria)]
         for j in range(number_of_criteria):
             weights[j] = float(data[weights_index[0][0]][j + weights_index[0][1] + 1])
-            optimization_type[j] = int(data[optimization_types_index[0][0]][j + optimization_types_index[0][1] +1 ])
+            optimization_type[j] = int(data[optimization_types_index[0][0]][j + optimization_types_index[0][1] + 1])
 
         if method == "Electre I":
             agreement_threshold_index = np.argwhere(data == 'Agreement Threshold')
@@ -51,8 +48,10 @@ def read_criteria_details(method, data):
             indifference_thresholds = [0 for j in range(number_of_criteria)]
             criteria_types = ["" for j in range(number_of_criteria)]
             for j in range(number_of_criteria):
-                preference_thresholds[j]= float(data[preference_thresholds_index[0][0]][j + preference_thresholds_index[0][1] + 1])
-                indifference_thresholds[j]= float(data[indifference_threshold_index[0][0]][j + indifference_threshold_index[0][1] + 1])
+                preference_thresholds[j] = float(
+                    data[preference_thresholds_index[0][0]][j + preference_thresholds_index[0][1] + 1])
+                indifference_thresholds[j] = float(
+                    data[indifference_threshold_index[0][0]][j + indifference_threshold_index[0][1] + 1])
                 criteria_types[j] = data[criteria_types_index[0][0]][j + criteria_types_index[0][1] + 1]
             return weights, preference_thresholds, indifference_thresholds, optimization_type, criteria_types
         else:
@@ -60,33 +59,6 @@ def read_criteria_details(method, data):
     except Exception as ex:
         raise Exception("Wrong configuration of the uploaded files")
 
-def upload_csv_files(files, upload_folder):
-    """ get content of the uploaded files """
-    if 'Decision Matrix' not in files or ('Criteria Details' not in files):
-        raise Exception("Both the Decision Matrix file and the Criteria Details file are required")
-    decision_matrix_file = files['Decision Matrix']
-    criteria_details_file = files['Criteria Details']
-    # check for uploaded files
-    if decision_matrix_file.filename == '' or criteria_details_file.filename == '':
-        raise Exception("Select files for upload")
-    # check file type of decision matrix file and save file
-    decision_matrix_file_path = save_file(decision_matrix_file, upload_folder)
-    if decision_matrix_file_path == '':
-        raise Exception("Allowed file type is csv")
-    # check file type of criteria details file and save file
-    criteria_details_file_path = save_file(criteria_details_file, upload_folder)
-    if criteria_details_file_path == '':
-        raise Exception("Allowed file type is csv")
-    with open(decision_matrix_file_path, 'r', encoding='utf-8-sig') as csvfile:
-        decision_matrix = list(csv.reader(csvfile, delimiter=';'))
-    decision_matrix = np.array(decision_matrix)
-    with open(criteria_details_file_path, 'r', encoding='utf-8-sig') as csvfile:
-        criteria_details = list(csv.reader(csvfile, delimiter=';'))
-    criteria_details = np.array(criteria_details)
-    # delete uploaded csv files
-    delete_file(decision_matrix_file_path)
-    delete_file(criteria_details_file_path)
-    return decision_matrix, criteria_details
 
 def create_decision_matrix_json(json_decision_matrix):
     """ read decision matrix from json """
@@ -98,8 +70,9 @@ def create_decision_matrix_json(json_decision_matrix):
     for i in range(number_of_alternatives):
         alternatives[i] = alternatives_values[i]['Name']
         for j in range(number_of_criteria):
-                decision_matrix[i][j] = float(alternatives_values[i]['Values'][j])
+            decision_matrix[i][j] = float(alternatives_values[i]['Values'][j])
     return number_of_criteria, number_of_alternatives, alternatives, decision_matrix
+
 
 def create_criteria_details_json(method, criteria_details_json):
     try:
@@ -122,8 +95,8 @@ def create_criteria_details_json(method, criteria_details_json):
             indifference_thresholds = [0 for j in range(number_of_criteria)]
             criteria_types = ["" for j in range(number_of_criteria)]
             for j in range(number_of_criteria):
-                preference_thresholds[j]= float(criteria_details_json['Preference_Thresholds'][j])
-                indifference_thresholds[j]= float(criteria_details_json['Indifference_Thresholds'][j])
+                preference_thresholds[j] = float(criteria_details_json['Preference_Thresholds'][j])
+                indifference_thresholds[j] = float(criteria_details_json['Indifference_Thresholds'][j])
                 criteria_types[j] = criteria_details_json['Criteria_Types'][j]
             return weights, preference_thresholds, indifference_thresholds, optimization_type, criteria_types
         else:
