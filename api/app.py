@@ -1,21 +1,19 @@
-import os
 import sys
 import logging
-import numpy as np
-from flask import Flask, request, jsonify, redirect, url_for, send_from_directory
-from flask_cors import CORS
-from methods import maut, prometheeII, topsis, electreI
-from settings import ALLOWED_EXTENSIONS, UPLOAD_FOLDER, API_PORT
-from helpers import allowed_file, save_file, result_in_json
-from input_loaders import upload_csv_files
 
+from flask import Flask, request, jsonify
+from MCDSS import electreI, topsis, prometheeII, maut
+from MCDSS.helpers import result_in_json
+from MCDSS.input_loaders import upload_csv_files
+from flask_cors import CORS
+from MCDSS.settings import UPLOAD_FOLDER
 logging.basicConfig(stream=sys.stdout, level=logging.INFO,
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 log = logging.getLogger(__name__)
 
+
 app = Flask(__name__)
 CORS(app)
-
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/mcdss/maut", methods=['POST'])
@@ -187,7 +185,7 @@ def mcdss():
         log.error(ex)
         return str(ex).encode('utf-8'), 400
 
-if __name__ == '__main__':
-    log.info("Starting Qualichain MCDSS")
-    app.secret_key = os.urandom(24)
-    app.run(host='0.0.0.0', port=API_PORT, debug=True)
+# if __name__ == '__main__':
+#     log.info("Starting Qualichain MCDSS")
+#     app.secret_key = os.urandom(24)
+#     app.run(host='0.0.0.0', port=API_PORT, debug=True)
